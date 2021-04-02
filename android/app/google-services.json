@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "918318848462",
+    "firebase_url": "https://pet-rescue-fb-default-rtdb.firebaseio.com",
+    "project_id": "pet-rescue-fb",
+    "storage_bucket": "pet-rescue-fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918318848462:android:79c75f8ca12973b2dbf39f",
+        "android_client_info": {
+          "package_name": "com.example.pet_rescue_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918318848462-9k34232gfins32cat22e85ff77j1c6ja.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pet_rescue_mobile",
+            "certificate_hash": "d88fdd2ad8e4e595bccbc9ed07ec4090d1060048"
+          }
+        },
+        {
+          "client_id": "918318848462-4i020h04552bc2eov8dnld7hcup093mq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPAMRkJJ8HmclhAUl6HUiBfViZt3kH69c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918318848462-4i020h04552bc2eov8dnld7hcup093mq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "918318848462-fgqn9bthj80djuj0d8v83jg6eiq73q85.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "pet-rescue"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918318848462:android:cf672e72fa0b0d87dbf39f",
+        "android_client_info": {
+          "package_name": "com.example.prs_staff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918318848462-ssjt15o8ioh95luhjvu8nhi27f0gkkd5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.prs_staff",
+            "certificate_hash": "d88fdd2ad8e4e595bccbc9ed07ec4090d1060048"
+          }
+        },
+        {
+          "client_id": "918318848462-4i020h04552bc2eov8dnld7hcup093mq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPAMRkJJ8HmclhAUl6HUiBfViZt3kH69c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918318848462-4i020h04552bc2eov8dnld7hcup093mq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "918318848462-fgqn9bthj80djuj0d8v83jg6eiq73q85.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "pet-rescue"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
