@@ -1,0 +1,49 @@
+class UserModel {
+  String email;
+  String id;
+  List roles;
+  String centerId;
+  String lastName;
+  String firstName;
+  String address;
+  int gender;
+  String phone;
+  String imgUrl;
+  String dob;
+
+  UserModel({
+    this.email,
+    this.id,
+    this.roles,
+    this.centerId,
+    this.lastName,
+    this.firstName,
+    this.address,
+    this.gender,
+    this.phone,
+    this.imgUrl,
+    this.dob,
+  });
+
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    List tmpList = [];
+    for (var i = 0; i < json['roles'].length; i++) {
+      var tmp = json['roles'][i];
+      tmpList.add(tmp);
+    }
+    print(tmpList);
+    return UserModel(
+      email: json['email'],
+      id: json['id'],
+      roles: tmpList,
+      centerId: json['centerId'],
+      lastName: json['lastName'],
+      firstName: json['firstName'],
+      address: json['address'],
+      gender: json['gender'],
+      phone: json['phone'],
+      imgUrl: json['imgUrl'],
+      dob: json['dob'].toString(),
+    );
+  }
+}
