@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:commons/commons.dart';
 import 'dart:async';
@@ -70,5 +73,15 @@ class FirebaseSignIn {
     sharedPreferences.remove('fullname');
 
     print("User Signed Out");
+  }
+
+  // trước là tên thư mục, sau là tên file
+  Future<String> uploadAvatar(File image, String uid) async {
+    FirebaseStorage storage = FirebaseStorage.instance;
+    StorageReference storageReference = storage.ref().child('volunteer/$uid');
+    StorageUploadTask uploadTask = storageReference.putFile(image);
+    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    String url = await taskSnapshot.ref.getDownloadURL();
+    return url;
   }
 }

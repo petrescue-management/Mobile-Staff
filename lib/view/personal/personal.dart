@@ -5,6 +5,7 @@ import 'package:prs_staff/model/user_model.dart';
 import 'package:prs_staff/repository/repository.dart';
 import 'package:prs_staff/view/personal/config_menu.dart';
 import 'package:prs_staff/main.dart';
+import 'package:prs_staff/view/personal/policy/policy.dart';
 import 'package:prs_staff/view/personal/profile/profile_details.dart';
 import 'package:prs_staff/src/style.dart';
 import 'package:prs_staff/src/asset.dart';
@@ -73,7 +74,16 @@ class _PersonalPageState extends State<PersonalPage> {
                     return Container(
                       child: Column(
                         children: [
-                          profilePic(snapshot.data),
+                          Container(
+                            alignment: Alignment.center,
+                            height: MediaQuery.of(context).size.height * 0.28,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [color3, color2, color1],
+                              ),
+                            ),
+                            child: profilePic(snapshot.data),
+                          ),
                           configMenu(snapshot.data),
                         ],
                       ),
@@ -158,7 +168,7 @@ class _PersonalPageState extends State<PersonalPage> {
     return Container(
       child: Container(
         margin: EdgeInsets.only(top: 25),
-        height: MediaQuery.of(context).size.height * 0.5,
+        height: MediaQuery.of(context).size.height * 0.45,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -178,9 +188,16 @@ class _PersonalPageState extends State<PersonalPage> {
               },
             ),
             ConfigMenu(
-              text: 'Điều khoản của chúng tôi',
-              icon: Icons.pets,
-              press: () {},
+              text: 'Điều khoản',
+              icon: Icons.policy,
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PolicyPage(),
+                  ),
+                );
+              },
             ),
             ConfigMenu(
               text: 'Đăng xuất',

@@ -1,7 +1,7 @@
 class UserModel {
   String email;
   String id;
-  List roles;
+  List<String> roles;
   String centerId;
   String lastName;
   String firstName;
@@ -26,12 +26,11 @@ class UserModel {
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    List tmpList = [];
+    List<String> tmpList = [];
     for (var i = 0; i < json['roles'].length; i++) {
       var tmp = json['roles'][i];
       tmpList.add(tmp);
     }
-    print(tmpList);
     return UserModel(
       email: json['email'],
       id: json['id'],

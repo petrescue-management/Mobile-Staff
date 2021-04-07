@@ -6,6 +6,7 @@ const Color color1 = Color(0xffFA696C);
 const Color color2 = Color(0xffFA8165);
 const Color color3 = Color(0xffFB8964);
 
+const Color darkBlue = Color.fromRGBO(0, 0, 80, 1.0);
 const Color primaryGreen = Color(0xff416d6d);
 const Color secondaryGreen = Color(0xff16a085);
 Color fadedBlack = Colors.black.withAlpha(150);

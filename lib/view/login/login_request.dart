@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:commons/commons.dart';
 import 'package:prs_staff/repository/repository.dart';
 import 'package:prs_staff/src/asset.dart';
 import 'package:prs_staff/src/style.dart';
+import 'package:prs_staff/src/data.dart';
 import 'package:prs_staff/view/custom_widget/custom_button.dart';
 import 'package:prs_staff/view/custom_widget/custom_dialog.dart';
 
@@ -44,7 +46,7 @@ class _LoginRequestState extends State<LoginRequest> {
             Center(
               child: Container(
                 alignment: Alignment.center,
-                height: MediaQuery.of(context).size.height * 0.55,
+                height: MediaQuery.of(context).size.height * 0.57,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -56,14 +58,14 @@ class _LoginRequestState extends State<LoginRequest> {
                             text: 'Chào mừng bạn đến với\n',
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 30,
+                                fontSize: 28,
                                 fontFamily: 'Philosopher'),
                           ),
                           TextSpan(
                             text: 'RESCUE ME',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 40,
+                              fontSize: 36,
                               fontFamily: 'Salsa',
                               letterSpacing: 2,
                             ),
@@ -72,8 +74,8 @@ class _LoginRequestState extends State<LoginRequest> {
                       ),
                     ),
                     Container(
-                      width: 250,
-                      height: 250,
+                      width: 200,
+                      height: 200,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: color2, width: 3),
@@ -82,7 +84,24 @@ class _LoginRequestState extends State<LoginRequest> {
                         ),
                       ),
                     ),
-                    _signInButton(),
+                    Container(
+                      height: 150,
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        children: [
+                          _signInButton(),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 45),
+                            child: SizedBox(
+                              child: loginNotice(context),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
                 decoration: BoxDecoration(
@@ -98,60 +117,43 @@ class _LoginRequestState extends State<LoginRequest> {
 
   final _repo = Repository();
 
-  // loading
-  Widget loading(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      color: Colors.white,
-      child: Center(
-        child: Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: Colors.white,
-          ),
-          child: CircularProgressIndicator(),
-        ),
-      ),
-    );
-  }
-
-  // ignore: missing_return
-  Future<bool> _confirmPop() {
-    Navigator.of(context).pop();
-  }
+  bool hasRole = false;
 
   // sign in button
   Widget _signInButton() {
-    return WillPopScope(
-      onWillPop: _confirmPop,
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.07,
-        padding: EdgeInsets.symmetric(horizontal: 30.0),
-        child: CustomRaiseButtonIcon(
-          labelText: ' Đăng nhập với Google',
-          assetName: google_logo,
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (context) =>
-                    ProgressDialog(message: 'Đang kiểm tra tài khoản...'));
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.06,
+      padding: EdgeInsets.symmetric(horizontal: 30.0),
+      child: CustomRaiseButtonIcon(
+        labelText: ' Đăng nhập với Google',
+        assetName: google_logo,
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (context) =>
+                  ProgressDialog(message: 'Đang kiểm tra tài khoản...'));
 
-            _repo.signIn().then(
-                  (value) => {
-                    if (value == null || value.isEmpty)
-                      loading(context)
-                    else
-                      {
-                        Navigator.of(context)
-                            .popUntil((route) => route.isFirst),
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => MyApp())),
-                      }
+          _repo.signIn().then(
+            (value) {
+              if (value == null) {
+                warningDialog(
+                  context,
+                  'Tài khoản của bạn chưa được cấp quyền để đăng nhập.',
+                  neutralAction: () {
+                    _repo.signOut();
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => MyApp()));
                   },
                 );
-          },
-        ),
+              } else {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => MyApp()));
+              }
+            },
+          );
+        },
       ),
     );
   }

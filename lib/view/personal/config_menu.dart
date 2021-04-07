@@ -16,7 +16,7 @@ class ConfigMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: 32,
+        horizontal: 35,
         vertical: 10,
       ),
       child: FlatButton(
@@ -25,7 +25,7 @@ class ConfigMenu extends StatelessWidget {
           borderRadius: BorderRadius.circular(25),
           side: BorderSide(
             color: color2,
-            width: 0.5,
+            width: 2,
           ),
         ),
         color: Color(0xFFF5F6F9),

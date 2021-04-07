@@ -29,6 +29,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
   font_awesome_flutter: ^8.11.0
+  carousel_slider: ^2.2.0
 
   firebase_core: ^0.4.0+9
   firebase_auth: ^0.14.0+5
@@ -44,7 +45,10 @@ dependencies:
   flutter_launcher_icons: ^0.8.1
   flutter_form_builder: ^3.12.0
   flutter_local_notifications: ^1.4.4+1
+  
   image_picker: ^0.6.7+2
+  multi_image_picker: ^4.6.7
+  path_provider: ^1.6.17
   commons: ^0.7.8+3
   
   intl: ^0.16.1
@@ -77,14 +81,13 @@ flutter:
   assets:
     - assets/background.jpg
     - assets/p8.png
-    - assets/bgz6.jpg
+    - assets/warning.png
     - assets/xp.jpg
-    - assets/shyam.jpg
+    - assets/bglpc.jpg
     - assets/launcher_image.png
-    - assets/Logo_withtitle_square.png
     - assets/google_logo.png
-    - assets/map.png
     - assets/Logo_notitle_square.png
+    - assets/icons/box.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
