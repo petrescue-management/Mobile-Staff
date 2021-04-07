@@ -5,4 +5,10 @@ class ApiUrl {
       'https://petrescueapi.azurewebsites.net/api/users';
   static String updateUserDetail =
       'https://petrescueapi.azurewebsites.net/api/users/update-profile';
+  static String getWaitingFinderForm =
+      'https://petrescueapi.azurewebsites.net/api/search-finder-form?Status=1';
+  static String getProcessingFinderForm =
+      'https://petrescueapi.azurewebsites.net/api/get-list-finder-form-by-status?status=2';
+  static String getDoneFinderForm =
+      'https://petrescueapi.azurewebsites.net/api/get-list-finder-form-by-status?status=4';
 }

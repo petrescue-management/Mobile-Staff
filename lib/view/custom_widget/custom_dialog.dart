@@ -44,3 +44,19 @@ class ProgressDialog extends StatelessWidget {
     );
   }
 }
+
+// loading
+Widget loading(BuildContext context) {
+  return Container(
+    height: MediaQuery.of(context).size.height,
+    width: MediaQuery.of(context).size.width,
+    child: Center(
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+        ),
+        child: CircularProgressIndicator(),
+      ),
+    ),
+  );
+}

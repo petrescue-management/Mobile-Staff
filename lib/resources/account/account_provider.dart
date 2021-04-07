@@ -31,9 +31,9 @@ class AccountProvider {
       print('JWT Token: ' + sharedPreferences.getString('token').toString());
       return response.body;
     } else {
-      print(response.statusCode);
-      throw Exception('Can not get jwt');
+      print('Can not get jwt ${response.statusCode}');
     }
+    return null;
   }
 
   Future<UserModel> getUserDetail() async {

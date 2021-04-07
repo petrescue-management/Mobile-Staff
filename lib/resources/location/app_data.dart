@@ -9,7 +9,7 @@ class AppData extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateUserLocation(Address userAddress) {
+  void getUserLocation(Address userAddress) {
     userLocation = userAddress;
     notifyListeners();
   }
