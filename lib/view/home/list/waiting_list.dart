@@ -31,17 +31,17 @@ class _WaitingListState extends State<WaitingList> {
       child: StreamBuilder(
         stream: finderBloc.waitingList,
         builder: (context, AsyncSnapshot<FinderFormBaseModel> snapshot) {
-          if (snapshot.hasError) {
+          if (snapshot.hasError || snapshot.data == null) {
             return loading(context);
-          } else if (snapshot.data == null || snapshot.data.result == []) {
+          } else if (snapshot.data.result.length == 0) {
             return Center(
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 150),
+                padding: EdgeInsets.symmetric(vertical: 200),
                 child: Column(
                   children: [
                     Image(
                       image: AssetImage(empty),
-                      height: 150,
+                      height: 100,
                     ),
                     SizedBox(height: 15),
                     Text(
@@ -56,13 +56,19 @@ class _WaitingListState extends State<WaitingList> {
               ),
             );
           } else {
+            List<FinderForm> resultList = snapshot.data.result;
+
+            resultList.sort((a, b) => DateTime.parse(b.finderDate)
+                .compareTo(DateTime.parse(a.finderDate)));
+
             return Container(
               child: ListView.builder(
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.vertical,
-                itemCount: snapshot.data.result.length,
+                controller: scrollController,
+                itemCount: resultList.length,
                 itemBuilder: (context, index) {
-                  FinderForm result = snapshot.data.result[index];
+                  FinderForm result = resultList[index];
                   return ProgressCard(finder: result);
                 },
               ),

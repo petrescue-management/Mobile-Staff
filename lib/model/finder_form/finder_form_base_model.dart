@@ -16,10 +16,10 @@ class FinderFormBaseModel {
   //   this.result,
   // });
 
-  FinderFormBaseModel.fromJson(Map<String, dynamic> json) {
+  FinderFormBaseModel.fromJson(List<dynamic> json) {
     List<FinderForm> tmpList = [];
-    for (var i = 0; i < json['result'].length; i++) {
-      FinderForm tmp = FinderForm(json['result'][i]);
+    for (var i = 0; i < json.length; i++) {
+      FinderForm tmp = FinderForm(json[i]);
       tmpList.add(tmp);
     }
     result = tmpList;

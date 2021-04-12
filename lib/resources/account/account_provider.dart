@@ -53,10 +53,13 @@ class AccountProvider {
 
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
-      sharedPreferences.remove('avatar');
-      sharedPreferences.setString('avatar', result.imgUrl);
+      // save userId to shared preferences
       sharedPreferences.remove('userId');
       sharedPreferences.setString('userId', result.id);
+      // save avatar to shared preferences
+      sharedPreferences.remove('avatar');
+      sharedPreferences.setString('avatar', result.imgUrl);
+      // save fullname to shared preferences
       sharedPreferences.remove('fullname');
       sharedPreferences.setString(
           'fullname', '${result.lastName} ${result.firstName}');

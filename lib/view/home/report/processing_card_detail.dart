@@ -2,34 +2,35 @@ import 'package:flutter/material.dart';
 
 import 'package:prs_staff/model/finder_form/finder_form_model.dart';
 
-import 'package:prs_staff/view/home/report/detail/card_detail.dart';
-import 'package:prs_staff/view/home/report/detail/card_map.dart';
-
 import 'package:prs_staff/src/asset.dart';
 import 'package:prs_staff/src/style.dart';
 
+import 'package:prs_staff/view/home/report/detail/card_detail.dart';
+import 'package:prs_staff/view/home/report/detail/card_map.dart';
+import 'package:prs_staff/view/home/report/detail/picker_form.dart';
+
 // ignore: must_be_immutable
-class ProgressCardDetail extends StatefulWidget {
+class ProcessingCardDetail extends StatefulWidget {
   FinderForm finder;
 
-  ProgressCardDetail({this.finder});
+  ProcessingCardDetail({this.finder});
 
   @override
-  _ProgressCardDetailState createState() => _ProgressCardDetailState();
+  _ProcessingCardDetailState createState() => _ProcessingCardDetailState();
 }
 
-class _ProgressCardDetailState extends State<ProgressCardDetail> {
+class _ProcessingCardDetailState extends State<ProcessingCardDetail> {
   ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(
-            'CHI TIẾT CỨU HỘ',
+            'THÔNG TIN CỨU HỘ',
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -84,7 +85,8 @@ class _ProgressCardDetailState extends State<ProgressCardDetail> {
       indicatorColor: mainColor,
       tabs: <Widget>[
         Tab(text: 'Bản đồ'),
-        Tab(text: 'Thông tin chi tiết'),
+        Tab(text: 'Chi tiết'),
+        Tab(text: 'Cập nhật'),
       ],
     );
   }
@@ -93,6 +95,7 @@ class _ProgressCardDetailState extends State<ProgressCardDetail> {
     return TabBarView(children: [
       FinderLocation(finder: widget.finder),
       Details(finder: widget.finder),
+      PickerForm(finder: widget.finder),
     ]);
   }
 }

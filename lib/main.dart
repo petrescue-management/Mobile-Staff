@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:prs_staff/repository/repository.dart';
+import 'package:prs_staff/view/custom_widget/custom_dialog.dart';
 import 'package:prs_staff/view/home/report/report.dart';
 import 'package:prs_staff/view/login/login_request.dart';
 import 'package:prs_staff/resources/location/app_data.dart';
@@ -161,20 +162,5 @@ class _MyApp extends State<MyApp> {
     );
   }
 
-  Widget loading(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      color: Colors.white,
-      child: Center(
-        child: Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: Colors.white,
-          ),
-          child: CircularProgressIndicator(),
-        ),
-      ),
-    );
-  }
+  
 }

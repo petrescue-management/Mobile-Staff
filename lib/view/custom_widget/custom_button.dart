@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prs_staff/src/style.dart';
 
-
 // ignore: must_be_immutable
 class CustomButton extends StatelessWidget {
   var onTap;
@@ -52,7 +51,7 @@ class CustomRaiseButtonIcon extends StatelessWidget {
       child: RaisedButton.icon(
         shape: RoundedRectangleBorder(
           side: BorderSide(
-            color: color2,
+            color: mainColor,
             width: 2,
           ),
           borderRadius: BorderRadius.all(Radius.circular(50.0)),
@@ -70,6 +69,37 @@ class CustomRaiseButtonIcon extends StatelessWidget {
         ),
         splashColor: Colors.red[100],
         color: Colors.white,
+      ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class CustomDisableButton extends StatelessWidget {
+  String label;
+
+  CustomDisableButton({this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        height: 50,
+        padding: EdgeInsets.symmetric(horizontal: 50),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Colors.grey[600],
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }

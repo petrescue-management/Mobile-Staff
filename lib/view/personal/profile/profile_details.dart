@@ -41,6 +41,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
   TextEditingController dobController = TextEditingController();
 
   TextEditingController tmpDateController = TextEditingController();
+  TextEditingController centerNameController = TextEditingController();
 
   final _repo = Repository();
 
@@ -59,6 +60,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
       dobController.text = widget.user.dob;
 
       tmpDateController.text = formatDateTime(dobController.text);
+      centerNameController.text = widget.user.centerName;
     });
   }
 
@@ -218,80 +220,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                CustomButton(
-                                  label: 'LƯU CHỈNH SỬA',
-                                  onTap: () {
-                                    confirmationDialog(context,
-                                        'Bạn muốn lưu thông tin chỉnh sửa?',
-                                        title: '',
-                                        confirm: false,
-                                        negativeText: 'Không',
-                                        positiveText: 'Có', positiveAction: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) => ProgressDialog(
-                                              message: 'Đang gửi...'));
-
-                                      UserModel tmpUser = new UserModel();
-                                      tmpUser.id = widget.user.id;
-                                      tmpUser.lastName =
-                                          lastNameController.text;
-                                      tmpUser.firstName =
-                                          firstNameController.text;
-                                      tmpUser.email = emailController.text;
-                                      tmpUser.phone = phoneController.text;
-                                      tmpUser.gender = widget.user.gender;
-                                      tmpUser.dob = dobController.text;
-
-                                      if (_image == null) {
-                                        tmpUser.imgUrl = widget.user.imgUrl;
-
-                                        accountBloc.updateUserDetail(tmpUser);
-                                        successDialog(context,
-                                            'Đã cập nhật thông tin cá nhân',
-                                            title: 'Thành công',
-                                            neutralAction: () {
-                                          _repo.getUserDetails();
-                                          Navigator.of(context).popUntil(
-                                              (route) => route.isFirst);
-                                          Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      MyApp()));
-                                        });
-                                      } else {
-                                        String url = '';
-                                        String baseName = basename(_image.path);
-                                        if (baseName != null) {
-                                          _repo
-                                              .uploadAvatar(_image, baseName)
-                                              .then((value) {
-                                            setState(() {
-                                              url = value;
-                                              tmpUser.imgUrl = url;
-
-                                              accountBloc
-                                                  .updateUserDetail(tmpUser);
-                                              successDialog(context,
-                                                  'Đã cập nhật thông tin cá nhân',
-                                                  title: 'Thành công',
-                                                  neutralAction: () {
-                                                Navigator.of(context).popUntil(
-                                                    (route) => route.isFirst);
-                                                Navigator.pushReplacement(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            MyApp()));
-                                              });
-                                            });
-                                          });
-                                        }
-                                      }
-                                    });
-                                  },
-                                ),
+                                _btnSubmitUpdate(context),
                               ],
                             ),
                           ),
@@ -305,6 +234,64 @@ class _ProfileDetailsState extends State<ProfileDetails> {
           ),
         ),
       ),
+    );
+  }
+
+  _btnSubmitUpdate(context) {
+    return CustomButton(
+      label: 'LƯU CHỈNH SỬA',
+      onTap: () {
+        confirmationDialog(context, 'Bạn muốn lưu thông tin chỉnh sửa?',
+            title: '',
+            confirm: false,
+            negativeText: 'Không',
+            positiveText: 'Có', positiveAction: () {
+          showDialog(
+              context: context,
+              builder: (context) => ProgressDialog(message: 'Đang gửi...'));
+
+          UserModel tmpUser = new UserModel();
+          tmpUser.id = widget.user.id;
+          tmpUser.lastName = lastNameController.text;
+          tmpUser.firstName = firstNameController.text;
+          tmpUser.email = emailController.text;
+          tmpUser.phone = phoneController.text;
+          tmpUser.gender = widget.user.gender;
+          tmpUser.dob = dobController.text;
+
+          if (_image == null) {
+            tmpUser.imgUrl = widget.user.imgUrl;
+
+            accountBloc.updateUserDetail(tmpUser);
+            successDialog(context, 'Đã cập nhật thông tin cá nhân',
+                title: 'Thành công', neutralAction: () {
+              _repo.getUserDetails();
+              Navigator.of(context).popUntil((route) => route.isFirst);
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => MyApp()));
+            });
+          } else {
+            String url = '';
+            String baseName = basename(_image.path);
+            if (baseName != null) {
+              _repo.uploadAvatar(_image, baseName).then((value) {
+                setState(() {
+                  url = value;
+                  tmpUser.imgUrl = url;
+
+                  accountBloc.updateUserDetail(tmpUser);
+                  successDialog(context, 'Đã cập nhật thông tin cá nhân',
+                      title: 'Thành công', neutralAction: () {
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => MyApp()));
+                  });
+                });
+              });
+            }
+          }
+        });
+      },
     );
   }
 
@@ -338,7 +325,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             height: 125,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: color2, width: 2),
+              border: Border.all(color: mainColor, width: 2),
               image: DecorationImage(
                 image: _image == null
                     ? NetworkImage(user.imgUrl)
@@ -354,7 +341,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
               height: 40,
               width: 40,
               decoration: BoxDecoration(
-                color: color2,
+                color: mainColor,
                 shape: BoxShape.circle,
               ),
               alignment: Alignment.center,
@@ -383,6 +370,37 @@ class _ProfileDetailsState extends State<ProfileDetails> {
         controller: scrollController,
         child: Column(
           children: <Widget>[
+            //* CENTER
+            TextFormField(
+              controller: centerNameController,
+              maxLines: 2,
+              decoration: InputDecoration(
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                labelText: 'Email*',
+                labelStyle: TextStyle(
+                  color: mainColor,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: mainColor,
+                    width: 2,
+                  ),
+                ),
+                fillColor: Colors.white,
+                filled: true,
+                enabled: false,
+                prefixIcon: Icon(
+                  Icons.business_center,
+                  color: mainColor,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             //* EMAIL
             TextFormField(
               controller: emailController,
@@ -390,14 +408,14 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                 floatingLabelBehavior: FloatingLabelBehavior.always,
                 labelText: 'Email*',
                 labelStyle: TextStyle(
-                  color: color2,
+                  color: mainColor,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: color2,
+                    color: mainColor,
                     width: 2,
                   ),
                 ),
@@ -406,7 +424,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                 enabled: false,
                 prefixIcon: Icon(
                   Icons.mail,
-                  color: color2,
+                  color: mainColor,
                 ),
               ),
             ),
@@ -426,14 +444,14 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       labelText: 'Họ*',
                       labelStyle: TextStyle(
-                        color: color2,
+                        color: mainColor,
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: color2,
+                          color: mainColor,
                           width: 2,
                         ),
                       ),
@@ -442,7 +460,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       counterText: '',
                       prefixIcon: Icon(
                         Icons.edit_outlined,
-                        color: color2,
+                        color: mainColor,
                       ),
                     ),
                     maxLength: 10,
@@ -457,14 +475,14 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       labelText: 'Tên*',
                       labelStyle: TextStyle(
-                        color: color2,
+                        color: mainColor,
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: color2,
+                          color: mainColor,
                           width: 2,
                         ),
                       ),
@@ -473,7 +491,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       counterText: '',
                       prefixIcon: Icon(
                         Icons.edit_outlined,
-                        color: color2,
+                        color: mainColor,
                       ),
                     ),
                     maxLength: 10,
@@ -491,14 +509,14 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                 floatingLabelBehavior: FloatingLabelBehavior.always,
                 labelText: 'Số điện thoại*',
                 labelStyle: TextStyle(
-                  color: color2,
+                  color: mainColor,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: color2,
+                    color: mainColor,
                     width: 2,
                   ),
                 ),
@@ -507,7 +525,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                 counterText: '',
                 prefixIcon: Icon(
                   Icons.phone_iphone,
-                  color: color2,
+                  color: mainColor,
                 ),
               ),
               keyboardType: TextInputType.number,
@@ -528,14 +546,14 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     labelText: 'Ngày sinh*',
                     labelStyle: TextStyle(
-                      color: color2,
+                      color: mainColor,
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: color2,
+                        color: mainColor,
                         width: 2,
                       ),
                     ),
@@ -544,7 +562,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                     counterText: '',
                     prefixIcon: Icon(
                       Icons.calendar_today,
-                      color: color2,
+                      color: mainColor,
                     ),
                   ),
                 ),

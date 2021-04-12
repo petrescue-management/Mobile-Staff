@@ -39,7 +39,28 @@ class FinderFormProvider {
     );
 
     if (response.statusCode == 200) {
-      var result = FinderFormProcessingModel.fromJson(json.decode(response.body));
+      var result =
+          FinderFormProcessingModel.fromJson(json.decode(response.body));
+      return result;
+    }
+    return null;
+  }
+
+  Future<FinderFormProcessingModel> getDeliveringFinderForms() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var jwtToken = sharedPreferences.getString('token');
+
+    final response = await http.get(
+      ApiUrl.getDeliveringFinderForm,
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ' + jwtToken,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var result =
+          FinderFormProcessingModel.fromJson(json.decode(response.body));
       return result;
     }
     return null;
@@ -58,8 +79,65 @@ class FinderFormProvider {
     );
 
     if (response.statusCode == 200) {
-      var result = FinderFormProcessingModel.fromJson(json.decode(response.body));
+      var result =
+          FinderFormProcessingModel.fromJson(json.decode(response.body));
       return result;
+    }
+    return null;
+  }
+
+  Future<bool> updateFinderFormStatus(String finderFormId, int status) async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var jwtToken = sharedPreferences.getString('token');
+
+    var resBody = {};
+    resBody['id'] = finderFormId;
+    resBody['status'] = status;
+
+    String str = json.encode(resBody);
+
+    final response = await http.post(
+      ApiUrl.updateFinderFormStatus,
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ' + jwtToken,
+      },
+      body: str,
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      print('Failed to load post ${response.statusCode}');
+    }
+    return null;
+  }
+
+  Future<bool> createPickerForm(String pickerDescription, String pickerImageUrl) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var jwtToken = sharedPreferences.getString('token');
+
+    var resBody = {};
+    resBody['pickerDescription'] = pickerDescription;
+    resBody['pickerImageUrl'] = pickerImageUrl;
+
+    String str = json.encode(resBody);
+
+    final response = await http.post(
+      ApiUrl.createPickerForm,
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ' + jwtToken,
+      },
+      body: str,
+    );
+
+    print(str);
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      print('Failed to load post ${response.statusCode}');
     }
     return null;
   }

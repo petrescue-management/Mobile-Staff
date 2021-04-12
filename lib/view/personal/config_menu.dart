@@ -20,11 +20,11 @@ class ConfigMenu extends StatelessWidget {
         vertical: 10,
       ),
       child: FlatButton(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(18),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25),
           side: BorderSide(
-            color: color2,
+            color: mainColor,
             width: 2,
           ),
         ),
@@ -35,7 +35,7 @@ class ConfigMenu extends StatelessWidget {
             // menu icon
             Icon(
               icon,
-              color: color1,
+              color: mainColor,
             ),
             SizedBox(width: 10),
             // menu title

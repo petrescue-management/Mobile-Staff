@@ -128,7 +128,7 @@ loginNotice(BuildContext context) => RichText(
           TextSpan(
               text: 'Điều khoản & Điều kiện ',
               style: TextStyle(
-                color: color2,
+                color: mainColor,
                 decoration: TextDecoration.underline,
               ),
               recognizer: TapGestureRecognizer()

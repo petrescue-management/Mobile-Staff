@@ -78,7 +78,7 @@ class _LoginRequestState extends State<LoginRequest> {
                       height: 200,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: color2, width: 3),
+                        border: Border.all(color: mainColor, width: 3),
                         image: DecorationImage(
                           image: AssetImage(app_logo_notitle),
                         ),
