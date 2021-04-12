@@ -6,18 +6,18 @@ import 'package:prs_staff/src/asset.dart';
 import 'package:prs_staff/view/custom_widget/custom_dialog.dart';
 import 'package:prs_staff/view/home/report/report_card.dart';
 
-class ProcessingList extends StatefulWidget {
+class DeliveringList extends StatefulWidget {
   @override
-  _ProcessingListState createState() => _ProcessingListState();
+  _DeliveringListState createState() => _DeliveringListState();
 }
 
-class _ProcessingListState extends State<ProcessingList> {
+class _DeliveringListState extends State<DeliveringList> {
   ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    finderBloc.getProcessingList();
+    finderBloc.getDeliveringList();
   }
 
   @override
@@ -28,7 +28,7 @@ class _ProcessingListState extends State<ProcessingList> {
         horizontal: 10,
       ),
       child: StreamBuilder(
-        stream: finderBloc.processingList,
+        stream: finderBloc.deliveringList,
         builder: (context, AsyncSnapshot<FinderFormProcessingModel> snapshot) {
           if (snapshot.hasError || snapshot.data == null) {
             return loading(context);
@@ -44,7 +44,7 @@ class _ProcessingListState extends State<ProcessingList> {
                     ),
                     SizedBox(height: 15),
                     Text(
-                      'Chưa có yêu cầu nào đang được xử lý',
+                      'Chưa có thú cưng nào đang được mang về',
                       style: TextStyle(
                         color: Colors.grey[800],
                         fontSize: 18.0,

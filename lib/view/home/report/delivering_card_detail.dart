@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 
 import 'package:prs_staff/model/finder_form/finder_form_model.dart';
 
-import 'package:prs_staff/view/home/report/detail/card_detail.dart';
-import 'package:prs_staff/view/home/report/detail/card_map.dart';
-
 import 'package:prs_staff/src/asset.dart';
 import 'package:prs_staff/src/style.dart';
 
+import 'package:prs_staff/view/home/report/detail/card_detail.dart';
+import 'package:prs_staff/view/home/report/detail/card_map.dart';
+
 // ignore: must_be_immutable
-class ProgressCardDetail extends StatefulWidget {
+class DeliveringCardDetail extends StatefulWidget {
   FinderForm finder;
 
-  ProgressCardDetail({this.finder});
+  DeliveringCardDetail({this.finder});
 
   @override
-  _ProgressCardDetailState createState() => _ProgressCardDetailState();
+  _DeliveringCardDetailState createState() => _DeliveringCardDetailState();
 }
 
-class _ProgressCardDetailState extends State<ProgressCardDetail> {
+class _DeliveringCardDetailState extends State<DeliveringCardDetail> {
   ScrollController scrollController = ScrollController();
 
   @override
@@ -29,7 +29,7 @@ class _ProgressCardDetailState extends State<ProgressCardDetail> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(
-            'CHI TIẾT CỨU HỘ',
+            'THÔNG TIN CỨU HỘ',
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -84,7 +84,7 @@ class _ProgressCardDetailState extends State<ProgressCardDetail> {
       indicatorColor: mainColor,
       tabs: <Widget>[
         Tab(text: 'Bản đồ'),
-        Tab(text: 'Thông tin chi tiết'),
+        Tab(text: 'Chi tiết'),
       ],
     );
   }

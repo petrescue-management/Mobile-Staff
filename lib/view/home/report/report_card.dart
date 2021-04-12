@@ -7,6 +7,8 @@ import 'package:prs_staff/model/finder_form/finder_form_model.dart';
 
 import 'package:prs_staff/resources/location/assistant.dart';
 
+import 'package:prs_staff/view/home/report/processing_card_detail.dart';
+import 'package:prs_staff/view/home/report/delivering_card_detail.dart';
 import 'package:prs_staff/view/home/report/report_card_detail.dart';
 
 // ignore: must_be_immutable
@@ -29,15 +31,22 @@ class _ProgressCard extends State<ProgressCard> {
   Position finderPosition;
   String finderAddress = '';
 
+  String finderDate;
+  String status;
+
   @override
   void initState() {
     super.initState();
     setState(() {
-      imgUrlList = widget.finder.finderFormImgUrl;
+      imgUrlList = widget.finder.finderImageUrl;
       firstUrl = imgUrlList.elementAt(0);
 
       latitude = widget.finder.lat;
       longitude = widget.finder.lng;
+
+      finderDate = formatDateTime(widget.finder.finderDate);
+      
+      status = getFinderFormStatus(widget.finder.finderFormStatus);
     });
 
     locateUserAddressPosition();
@@ -57,23 +66,72 @@ class _ProgressCard extends State<ProgressCard> {
     });
   }
 
+  formatDateTime(String date) {
+    DateTime tmp = DateTime.parse(date);
+    String result = '${tmp.day}/${tmp.month}/${tmp.year}';
+    return result;
+  }
+
+  getFinderFormStatus(int status) {
+    String result = '';
+
+    if (status == 1) {
+      result = 'Đang chờ xử lý';
+    } else if (status == 2) {
+      result = 'Đang cứu hộ';
+    } else if (status == 3) {
+      result = 'Đã đến nơi';
+    } else if (status == 4) {
+      result = 'Cứu hộ thành công';
+    } else {
+      result = 'Bị hủy';
+    }
+
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) {
-              return ProgressCardDetail(
-                finder: widget.finder,
-              );
-            },
-          ),
-        );
+        print(widget.finder.finderFormId);
+        if (widget.finder.finderFormStatus == 1) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return ProgressCardDetail(
+                  finder: widget.finder,
+                );
+              },
+            ),
+          );
+        } else if (widget.finder.finderFormStatus == 2) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return ProcessingCardDetail(
+                  finder: widget.finder,
+                );
+              },
+            ),
+          );
+        } else if (widget.finder.finderFormStatus == 3) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return DeliveringCardDetail(
+                  finder: widget.finder,
+                );
+              },
+            ),
+          );
+        } else if (widget.finder.finderFormStatus == 4) {
+          print('done');
+        }
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        height: MediaQuery.of(context).size.height * 0.14,
+        height: MediaQuery.of(context).size.height * 0.15,
         child: Stack(
           children: [
             Container(
@@ -84,8 +142,8 @@ class _ProgressCard extends State<ProgressCard> {
                     width: MediaQuery.of(context).size.width * 0.32,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        bottomLeft: Radius.circular(20),
+                        topLeft: Radius.circular(18),
+                        bottomLeft: Radius.circular(18),
                       ),
                       image: DecorationImage(
                         image: NetworkImage(firstUrl),
@@ -112,14 +170,26 @@ class _ProgressCard extends State<ProgressCard> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(
-                            widget.finder.finderFormStatus == 1
-                                ? 'Đang chờ xử lý'
-                                : '',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: fadedBlack,
-                              fontStyle: FontStyle.italic,
+                          Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Ngày yêu cầu: $finderDate',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: fadedBlack,
+                                  ),
+                                ),
+                                Text(
+                                  status == null || status == '' ? '' : status,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: fadedBlack,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -132,7 +202,7 @@ class _ProgressCard extends State<ProgressCard> {
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 border: Border.all(
-                  color: color1,
+                  color: mainColor,
                   width: 1.5,
                 ),
               ),

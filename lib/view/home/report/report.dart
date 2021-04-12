@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:prs_staff/src/asset.dart';
 import 'package:prs_staff/src/style.dart';
 import 'package:prs_staff/view/home/list/waiting_list.dart';
 import 'package:prs_staff/view/home/list/processing_list.dart';
-import 'package:prs_staff/view/home/list/done_list.dart';
+import 'package:prs_staff/view/home/list/delivering_list.dart';
 import 'package:prs_staff/view/personal/personal.dart';
 
 class HomePage extends StatefulWidget {
@@ -53,16 +52,11 @@ class _HomePageState extends State<HomePage> {
         body: Stack(
           children: [
             Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(bgxp),
-                  fit: BoxFit.cover,
-                ),
-              ),
+              color: backgroundColor,
             ),
             Container(
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.85),
+                color: Colors.white.withOpacity(0.8),
               ),
             ),
             buildTabBody(),
@@ -76,21 +70,15 @@ class _HomePageState extends State<HomePage> {
     return TabBar(
       labelColor: Colors.black,
       labelStyle: TextStyle(
-        fontSize: 16,
+        fontSize: 15,
         fontFamily: 'Philosopher',
         fontWeight: FontWeight.bold,
       ),
-      indicatorColor: color2,
+      indicatorColor: mainColor,
       tabs: <Widget>[
-        Tab(
-          text: 'Chờ xử lý',
-        ),
-        Tab(
-          text: 'Đang xử lý',
-        ),
-        Tab(
-          text: 'Đã xử lý',
-        ),
+        Tab(text: 'Hàng đợi'),
+        Tab(text: 'Cứu hộ'),
+        Tab(text: 'Đưa về'),
       ],
     );
   }
@@ -99,7 +87,7 @@ class _HomePageState extends State<HomePage> {
     return TabBarView(children: <Widget>[
       WaitingList(),
       ProcessingList(),
-      DoneList(),
+      DeliveringList(),
     ]);
   }
 }

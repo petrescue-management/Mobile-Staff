@@ -3,6 +3,7 @@ class UserModel {
   String id;
   List<String> roles;
   String centerId;
+  String centerName;
   String lastName;
   String firstName;
   String address;
@@ -16,6 +17,7 @@ class UserModel {
     this.id,
     this.roles,
     this.centerId,
+    this.centerName,
     this.lastName,
     this.firstName,
     this.address,
@@ -36,6 +38,7 @@ class UserModel {
       id: json['id'],
       roles: tmpList,
       centerId: json['centerId'],
+      centerName: json['center']['centerName'],
       lastName: json['lastName'],
       firstName: json['firstName'],
       address: json['address'],

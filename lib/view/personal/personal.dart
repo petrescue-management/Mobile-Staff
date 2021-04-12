@@ -3,10 +3,12 @@ import 'package:commons/commons.dart';
 import 'package:prs_staff/bloc/account_bloc.dart';
 import 'package:prs_staff/model/user_model.dart';
 import 'package:prs_staff/repository/repository.dart';
+import 'package:prs_staff/view/custom_widget/custom_dialog.dart';
 import 'package:prs_staff/view/personal/config_menu.dart';
 import 'package:prs_staff/main.dart';
 import 'package:prs_staff/view/personal/policy/policy.dart';
 import 'package:prs_staff/view/personal/profile/profile_details.dart';
+import 'package:prs_staff/view/home/list/done_list.dart';
 import 'package:prs_staff/src/style.dart';
 import 'package:prs_staff/src/asset.dart';
 
@@ -69,7 +71,7 @@ class _PersonalPageState extends State<PersonalPage> {
                 stream: accountBloc.userDetail,
                 builder: (context, AsyncSnapshot<UserModel> snapshot) {
                   if (snapshot.hasError || snapshot.data == null) {
-                    return Center(child: CircularProgressIndicator());
+                    return loading(context);
                   } else {
                     return Container(
                       child: Column(
@@ -166,57 +168,78 @@ class _PersonalPageState extends State<PersonalPage> {
 
   Widget configMenu(UserModel user) {
     return Container(
-      child: Container(
-        margin: EdgeInsets.only(top: 25),
-        height: MediaQuery.of(context).size.height * 0.45,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ConfigMenu(
-              text: 'Chỉnh sửa thông tin',
-              icon: Icons.account_circle,
-              press: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return ProfileDetails(
-                        user: user,
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-            ConfigMenu(
-              text: 'Điều khoản',
-              icon: Icons.policy,
-              press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PolicyPage(),
-                  ),
-                );
-              },
-            ),
-            ConfigMenu(
-              text: 'Đăng xuất',
-              icon: Icons.logout,
-              press: () {
-                confirmationDialog(context, "Bạn chắc chắn muốn đăng xuất ?",
-                    positiveText: "Có",
-                    neutralText: "Không",
-                    confirm: false,
-                    title: "", positiveAction: () {
-                  _repo.signOut().then((_) {
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => MyApp()));
+      height: MediaQuery.of(context).size.height * 0.5,
+      child: SizedBox(
+        child: SingleChildScrollView(
+          controller: scrollController,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 20),
+                child: ConfigMenu(
+                  text: 'Chỉnh sửa thông tin',
+                  icon: Icons.account_circle,
+                  press: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ProfileDetails(
+                            user: user,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Container(
+                child: ConfigMenu(
+                  text: 'Yêu cầu đã hoàn thành',
+                  icon: Icons.account_circle,
+                  press: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return DoneList();
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+              ConfigMenu(
+                text: 'Điều khoản',
+                icon: Icons.policy,
+                press: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return PolicyPage();
+                      },
+                    ),
+                  );
+                },
+              ),
+              ConfigMenu(
+                text: 'Đăng xuất',
+                icon: Icons.logout,
+                press: () {
+                  confirmationDialog(context, "Bạn chắc chắn muốn đăng xuất ?",
+                      positiveText: "Có",
+                      neutralText: "Không",
+                      confirm: false,
+                      title: "", positiveAction: () {
+                    _repo.signOut().then((_) {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => MyApp()));
+                    });
                   });
-                });
-              },
-            ),
-          ],
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
