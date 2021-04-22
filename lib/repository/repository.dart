@@ -4,9 +4,14 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
+
+import 'package:prs_staff/model/done_form.dart';
+import 'package:prs_staff/model/picker_form_model.dart';
 import 'package:prs_staff/model/user_model.dart';
 import 'package:prs_staff/model/finder_form/finder_form_base_model.dart';
 import 'package:prs_staff/model/finder_form/finder_form_processing.dart';
+
+import 'package:prs_staff/resources/report/document_provider.dart';
 import 'package:prs_staff/resources/report/finder_form_provider.dart';
 import 'package:prs_staff/resources/account/account_provider.dart';
 import 'package:prs_staff/resources/account/sign_in_fb.dart';
@@ -17,6 +22,7 @@ class Repository {
   final firebaseProvider = FirebaseSignIn();
   final finderFormProvider = FinderFormProvider();
   final pickerFormProvider = PickerFormProvider();
+  final documentProvider = DocumentProvider();
 
   // user
   Future<String> signIn() => firebaseProvider.signInWithGoogle();
@@ -46,14 +52,17 @@ class Repository {
   Future<FinderFormProcessingModel> getDeliveringFinderForms() =>
       finderFormProvider.getDeliveringFinderForms();
 
-  Future<FinderFormProcessingModel> getDoneFinderForms() =>
-      finderFormProvider.getDoneFinderForms();
+  Future<DoneBaseModel> getDoneFinderForms() =>
+      documentProvider.getDoneFinderForms();
 
   Future<bool> updateFinderFormStatus(String finderFormId, int status) =>
       finderFormProvider.updateFinderFormStatus(finderFormId, status);
 
+  Future<bool> cancelFinderForm(String finderFormId, String reason) =>
+      finderFormProvider.cancelFinderForm(finderFormId, reason);
+
   // picker form
-  Future<bool> createPickerForm(
+  Future<PickerFormModel> createPickerForm(
           String pickerDescription, String pickerImageUrl) =>
       pickerFormProvider.createPickerForm(pickerDescription, pickerImageUrl);
 
@@ -62,4 +71,7 @@ class Repository {
 
   Future<File> getImageFileFromAssets(Asset asset) =>
       pickerFormProvider.getImageFileFromAssets(asset);
+
+  Future<bool> createPetDocument(String pickerId, String finderId) =>
+      documentProvider.createPetDocument(pickerId, finderId);
 }

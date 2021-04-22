@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 import 'package:commons/commons.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:prs_staff/model/finder_form/finder_form_model.dart';
+import 'package:prs_staff/repository/repository.dart';
 
 import 'package:prs_staff/src/style.dart';
 
-import 'package:prs_staff/repository/repository.dart';
-
 import 'package:prs_staff/view/custom_widget/custom_dialog.dart';
 import 'package:prs_staff/view/custom_widget/custom_button.dart';
-import 'package:prs_staff/view/home/report/processing_card_detail.dart';
+import 'package:prs_staff/view/custom_widget/video/custom_video_player.dart';
 
 import '../../../../main.dart';
 
@@ -33,6 +33,9 @@ class _DetailsState extends State<Details> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
 
   final _repo = Repository();
+
+  DatabaseReference _memberRef;
+  DatabaseReference _centerRef;
 
   List<String> imgUrlList;
   List<Widget> imageSliders;
@@ -54,6 +57,21 @@ class _DetailsState extends State<Details> {
   @override
   void initState() {
     super.initState();
+
+    _memberRef = FirebaseDatabase.instance
+        .reference()
+        .child('authUser')
+        .child('${widget.finder.insertedBy}')
+        .child('Notification');
+
+    _repo.getUserDetails().then((value) {
+      _centerRef = FirebaseDatabase.instance
+          .reference()
+          .child('manager')
+          .child('${value.centerId}')
+          .child('Notification');
+    });
+
     setState(() {
       petAttribute = getPetAttribute(widget.finder.petAttribute);
 
@@ -90,6 +108,17 @@ class _DetailsState extends State<Details> {
     return Container(
       child: Column(
         children: [
+          Container(
+            padding: EdgeInsets.only(right: 30, left: 30),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Hình ảnh mô tả',
+              style: TextStyle(
+                color: mainColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           CarouselSlider(
             items: imageSliders,
             options: CarouselOptions(
@@ -168,6 +197,46 @@ class _DetailsState extends State<Details> {
                   if (value == null) {
                     warningDialog(context, 'Lỗi hệ thống', title: '');
                   } else {
+                    var currentDate = DateTime.now();
+                    String currentDay = (currentDate.day < 10
+                        ? '0${currentDate.day}'
+                        : '${currentDate.day}');
+                    String currentMonth = (currentDate.month < 10
+                        ? '0${currentDate.month}'
+                        : '${currentDate.month}');
+                    String currentHour = (currentDate.hour < 10
+                        ? '0${currentDate.hour}'
+                        : '${currentDate.hour}');
+                    String currentMinute = (currentDate.minute < 10
+                        ? '0${currentDate.minute}'
+                        : '${currentDate.minute}');
+                    String currentSecond = (currentDate.second < 10
+                        ? '0${currentDate.second}'
+                        : '${currentDate.second}');
+                    var notiDate =
+                        '${currentDate.year}-$currentMonth-$currentDay $currentHour:$currentMinute:$currentSecond';
+
+                    Map<String, dynamic> centerNoti = {
+                      'date': notiDate,
+                      'isCheck': false,
+                      'type': 2,
+                    };
+
+                    _centerRef
+                        .child(widget.finder.finderFormId)
+                        .set(centerNoti);
+
+                    Map<String, dynamic> memberNoti = {
+                      'body': 'Yêu cầu cứu hộ của bạn đang được xử lý.',
+                      'date': notiDate,
+                      'titlte': 'Bạn có thông báo về yêu cầu cứu hộ.',
+                      'type': 2,
+                    };
+
+                    _memberRef
+                        .child(widget.finder.finderFormId)
+                        .set(memberNoti);
+
                     successDialog(
                       context,
                       'Đã nhận yêu cầu.',
@@ -180,14 +249,6 @@ class _DetailsState extends State<Details> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => MyApp(),
-                          ),
-                        );
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProcessingCardDetail(
-                              finder: widget.finder,
-                            ),
                           ),
                         );
                       },
@@ -220,6 +281,34 @@ class _DetailsState extends State<Details> {
                   if (value == null) {
                     warningDialog(context, 'Lỗi hệ thống', title: '');
                   } else {
+                    var currentDate = DateTime.now();
+                    String currentDay = (currentDate.day < 10
+                        ? '0${currentDate.day}'
+                        : '${currentDate.day}');
+                    String currentMonth = (currentDate.month < 10
+                        ? '0${currentDate.month}'
+                        : '${currentDate.month}');
+                    String currentHour = (currentDate.hour < 10
+                        ? '0${currentDate.hour}'
+                        : '${currentDate.hour}');
+                    String currentMinute = (currentDate.minute < 10
+                        ? '0${currentDate.minute}'
+                        : '${currentDate.minute}');
+                    String currentSecond = (currentDate.second < 10
+                        ? '0${currentDate.second}'
+                        : '${currentDate.second}');
+                    var notiDate =
+                        '${currentDate.year}-$currentMonth-$currentDay $currentHour:$currentMinute:$currentSecond';
+
+                    Map<String, dynamic> memberNoti = {
+                      'body': 'Yêu cầu cứu hộ của bạn đã hoàn thành.',
+                      'date': notiDate,
+                      'titlte': 'Bạn có thông báo về yêu cầu cứu hộ.',
+                      'type': 2,
+                    };
+
+                    _memberRef.child(widget.finder.finderFormId).set(memberNoti);
+
                     successDialog(
                       context,
                       'Đã hoàn thành yêu cầu.',
@@ -255,6 +344,36 @@ class _DetailsState extends State<Details> {
           controller: scrollController,
           child: Column(
             children: <Widget>[
+              //* VIDEO
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Video mô tả',
+                  style: TextStyle(
+                    color: mainColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Container(
+                child: (widget.finder.finderFormVidUrl == null ||
+                        widget.finder.finderFormVidUrl == '')
+                    ? Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Không có video mô tả',
+                          style: TextStyle(color: Colors.black, fontSize: 15),
+                        ),
+                      )
+                    : Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 250,
+                        child: VideoThumbnailFromUrl(
+                          videoUrl: widget.finder.finderFormVidUrl,
+                        ),
+                      ),
+              ),
+              SizedBox(height: 15),
               //* FINDER NAME
               Container(
                 child: TextFormField(

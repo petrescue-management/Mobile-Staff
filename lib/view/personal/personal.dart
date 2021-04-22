@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+
 import 'package:commons/commons.dart';
+
 import 'package:prs_staff/bloc/account_bloc.dart';
 import 'package:prs_staff/model/user_model.dart';
 import 'package:prs_staff/repository/repository.dart';
-import 'package:prs_staff/view/custom_widget/custom_dialog.dart';
-import 'package:prs_staff/view/personal/config_menu.dart';
-import 'package:prs_staff/main.dart';
-import 'package:prs_staff/view/personal/policy/policy.dart';
-import 'package:prs_staff/view/personal/profile/profile_details.dart';
-import 'package:prs_staff/view/home/list/done_list.dart';
+
 import 'package:prs_staff/src/style.dart';
 import 'package:prs_staff/src/asset.dart';
+
+import 'package:prs_staff/view/custom_widget/custom_dialog.dart';
+import 'package:prs_staff/view/personal/config_menu.dart';
+import 'package:prs_staff/view/personal/policy/policy.dart';
+import 'package:prs_staff/view/personal/profile/profile_details.dart';
+import 'package:prs_staff/view/home/done/done_list.dart';
+
+import 'package:prs_staff/main.dart';
 
 class PersonalPage extends StatefulWidget {
   const PersonalPage({Key key}) : super(key: key);

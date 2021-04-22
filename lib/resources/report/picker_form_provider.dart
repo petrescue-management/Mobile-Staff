@@ -1,15 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:commons/commons.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+
+import 'package:prs_staff/model/picker_form_model.dart';
 import 'package:prs_staff/src/api_url.dart';
 
 class PickerFormProvider {
-  Future<bool> createPickerForm(
+  Future<PickerFormModel> createPickerForm(
       String pickerDescription, String pickerImageUrl) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var jwtToken = sharedPreferences.getString('token');
@@ -32,7 +35,7 @@ class PickerFormProvider {
     print(str);
 
     if (response.statusCode == 200) {
-      return true;
+      return PickerFormModel.fromJson(json.decode(response.body));
     } else {
       print('Failed to load post ${response.statusCode}');
     }

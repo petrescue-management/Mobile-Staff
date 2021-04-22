@@ -1,17 +1,19 @@
-// import 'package:firebase_database/firebase_database.dart';
+import 'package:provider/provider.dart';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:prs_staff/resources/location/app_data.dart';
+import 'package:prs_staff/model/push_notification.dart';
 import 'package:prs_staff/repository/repository.dart';
+
 import 'package:prs_staff/view/custom_widget/custom_dialog.dart';
 import 'package:prs_staff/view/home/report/report.dart';
 import 'package:prs_staff/view/login/login_request.dart';
-import 'package:prs_staff/resources/location/app_data.dart';
-import 'package:prs_staff/model/push_notification.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(
       ChangeNotifierProvider(
@@ -40,8 +42,6 @@ class _MyApp extends State<MyApp> {
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
-  // DatabaseReference _dbReference;
 
   @override
   void initState() {
@@ -103,17 +103,6 @@ class _MyApp extends State<MyApp> {
           });
 
           showNotification(_notificationInfo.title, _notificationInfo.body);
-
-          // SharedPreferences sharedPreferences =
-          //     await SharedPreferences.getInstance();
-
-          // _dbReference = FirebaseDatabase.instance
-          //     .reference()
-          //     .child('volunteer')
-          //     .child('${sharedPreferences.getString('userId')}');
-
-          // saveOrUpdateNotifications(
-          //     _notificationInfo.title, _notificationInfo.body, _dbReference);
         },
 
         // app in the background
@@ -128,16 +117,6 @@ class _MyApp extends State<MyApp> {
       );
     });
   }
-
-  // saveOrUpdateNotifications(String title, String body, DatabaseReference _ref) {
-  //   Map<String, dynamic> noti = {
-  //     'title': title,
-  //     'body': body,
-  //     'datetime': DateTime.now().toString(),
-  //   };
-
-  //   _ref.child('rescue - $title').set(noti);
-  // }
 
   @override
   Widget build(BuildContext context) {

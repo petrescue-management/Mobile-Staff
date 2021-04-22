@@ -1,11 +1,11 @@
 import 'dart:io';
+import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:commons/commons.dart';
-import 'dart:async';
 
 import 'account_provider.dart';
 

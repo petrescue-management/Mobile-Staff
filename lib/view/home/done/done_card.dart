@@ -1,67 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 
+import 'package:prs_staff/model/done_form.dart';
 import 'package:prs_staff/src/style.dart';
-
-import 'package:prs_staff/model/finder_form/finder_form_model.dart';
-import 'package:prs_staff/resources/location/assistant.dart';
-
-import 'package:prs_staff/view/home/report/processing_card_detail.dart';
-import 'package:prs_staff/view/home/report/delivering_card_detail.dart';
-import 'package:prs_staff/view/home/report/report_card_detail.dart';
+import 'package:prs_staff/view/home/done/done_card_detail.dart';
 
 // ignore: must_be_immutable
-class ProgressCard extends StatefulWidget {
-  FinderForm finder;
+class DoneCard extends StatefulWidget {
+  DoneModel document;
 
-  ProgressCard({
-    this.finder,
+  DoneCard({
+    this.document,
   });
 
   @override
-  _ProgressCard createState() => _ProgressCard();
+  _DoneCard createState() => _DoneCard();
 }
 
-class _ProgressCard extends State<ProgressCard> {
+class _DoneCard extends State<DoneCard> {
   List<String> imgUrlList;
   String firstUrl;
 
-  double latitude, longitude;
-  Position finderPosition;
-  String finderAddress = '';
-
   String finderDate;
+  String pickerDate;
   String status;
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      imgUrlList = widget.finder.finderImageUrl;
+      imgUrlList = widget.document.finderImageUrl;
       firstUrl = imgUrlList.elementAt(0);
 
-      latitude = widget.finder.lat;
-      longitude = widget.finder.lng;
-
-      finderDate = formatDateTime(widget.finder.finderDate);
-
-      status = getFinderFormStatus(widget.finder.finderFormStatus);
-    });
-
-    locateUserAddressPosition();
-  }
-
-  locateUserAddressPosition() async {
-    String address = '';
-
-    finderPosition = Position(latitude: latitude, longitude: longitude);
-
-    address = await Assistant.searchCoordinateAddress(finderPosition, context);
-
-    print('This is user Address: ' + address);
-
-    setState(() {
-      finderAddress = address;
+      finderDate = formatDateTime(widget.document.finderDate);
+      pickerDate = formatDateTime(widget.document.pickerDate);
     });
   }
 
@@ -71,60 +42,19 @@ class _ProgressCard extends State<ProgressCard> {
     return result;
   }
 
-  getFinderFormStatus(int status) {
-    String result = '';
-
-    if (status == 1) {
-      result = 'Đang chờ xử lý';
-    } else if (status == 2) {
-      result = 'Đang cứu hộ';
-    } else if (status == 3) {
-      result = 'Đã đến nơi';
-    } else if (status == 4) {
-      result = 'Cứu hộ thành công';
-    } else {
-      result = 'Bị hủy';
-    }
-
-    return result;
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print(widget.finder.finderFormId);
-        if (widget.finder.finderFormStatus == 1) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return ProgressCardDetail(
-                  finder: widget.finder,
-                );
-              },
-            ),
-          );
-        } else if (widget.finder.finderFormStatus == 2) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return ProcessingCardDetail(
-                  finder: widget.finder,
-                );
-              },
-            ),
-          );
-        } else if (widget.finder.finderFormStatus == 3) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return DeliveringCardDetail(
-                  finder: widget.finder,
-                );
-              },
-            ),
-          );
-        }
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return DoneCardDetail(
+                document: widget.document,
+              );
+            },
+          ),
+        );
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -158,10 +88,9 @@ class _ProgressCard extends State<ProgressCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            finderAddress,
+                            widget.document.finderName,
                             overflow: TextOverflow.ellipsis,
                             softWrap: false,
-                            maxLines: 2,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -179,7 +108,7 @@ class _ProgressCard extends State<ProgressCard> {
                                   ),
                                 ),
                                 Text(
-                                  status == null || status == '' ? '' : status,
+                                  'Ngày cứu hộ: $pickerDate',
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: fadedBlack,
