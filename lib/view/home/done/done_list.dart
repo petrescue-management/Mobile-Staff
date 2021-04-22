@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:prs_staff/bloc/finder_bloc.dart';
-import 'package:prs_staff/model/finder_form/finder_form_model.dart';
-import 'package:prs_staff/model/finder_form/finder_form_processing.dart';
+
+import 'package:prs_staff/bloc/document_bloc.dart';
+import 'package:prs_staff/model/done_form.dart';
+
 import 'package:prs_staff/src/asset.dart';
+
 import 'package:prs_staff/view/custom_widget/custom_dialog.dart';
-import 'package:prs_staff/view/home/report/report_card.dart';
+import 'package:prs_staff/view/home/done/done_card.dart';
 
 class DoneList extends StatefulWidget {
   @override
@@ -17,7 +19,7 @@ class _DoneListState extends State<DoneList> {
   @override
   void initState() {
     super.initState();
-    finderBloc.getDoneList();
+    documentBloc.getDoneList();
   }
 
   @override
@@ -40,9 +42,8 @@ class _DoneListState extends State<DoneList> {
         Container(
           padding: EdgeInsets.only(top: 50, left: 10, right: 10, bottom: 10),
           child: StreamBuilder(
-            stream: finderBloc.doneList,
-            builder:
-                (context, AsyncSnapshot<FinderFormProcessingModel> snapshot) {
+            stream: documentBloc.doneList,
+            builder: (context, AsyncSnapshot<DoneBaseModel> snapshot) {
               if (snapshot.hasError || snapshot.data == null) {
                 return loading(context);
               } else if (snapshot.data.result.length == 0) {
@@ -68,7 +69,7 @@ class _DoneListState extends State<DoneList> {
                   ),
                 );
               } else {
-                List<FinderForm> resultList = snapshot.data.result;
+                List<DoneModel> resultList = snapshot.data.result;
 
                 resultList.sort((a, b) => DateTime.parse(b.finderDate)
                     .compareTo(DateTime.parse(a.finderDate)));
@@ -80,8 +81,8 @@ class _DoneListState extends State<DoneList> {
                     controller: scrollController,
                     itemCount: resultList.length,
                     itemBuilder: (context, index) {
-                      FinderForm result = resultList[index];
-                      return ProgressCard(finder: result);
+                      DoneModel result = resultList[index];
+                      return DoneCard(document: result);
                     },
                   ),
                 );

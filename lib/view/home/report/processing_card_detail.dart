@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:commons/commons.dart';
 
 import 'package:prs_staff/model/finder_form/finder_form_model.dart';
+import 'package:prs_staff/repository/repository.dart';
 
 import 'package:prs_staff/src/asset.dart';
 import 'package:prs_staff/src/style.dart';
@@ -8,6 +10,10 @@ import 'package:prs_staff/src/style.dart';
 import 'package:prs_staff/view/home/report/detail/card_detail.dart';
 import 'package:prs_staff/view/home/report/detail/card_map.dart';
 import 'package:prs_staff/view/home/report/detail/picker_form.dart';
+import 'package:prs_staff/view/custom_widget/custom_dialog.dart';
+import 'package:prs_staff/view/custom_widget/custom_divider.dart';
+
+import 'package:prs_staff/main.dart';
 
 // ignore: must_be_immutable
 class ProcessingCardDetail extends StatefulWidget {
@@ -21,6 +27,9 @@ class ProcessingCardDetail extends StatefulWidget {
 
 class _ProcessingCardDetailState extends State<ProcessingCardDetail> {
   ScrollController scrollController = ScrollController();
+  TextEditingController reasonController = TextEditingController();
+
+  final _repo = Repository();
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +56,168 @@ class _ProcessingCardDetailState extends State<ProcessingCardDetail> {
               Navigator.of(context).pop();
             },
           ),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.cancel,
+                size: 35,
+              ),
+              color: Colors.black,
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Dialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        elevation: 6,
+                        backgroundColor: Colors.transparent,
+                        child: Container(
+                          height: 280,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.only(top: 10),
+                                child: Text(
+                                  "LÍ DO HỦY YÊU CẦU",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                child: CustomDivider(),
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal: 15,
+                                  ),
+                                  child: TextFormField(
+                                    controller: reasonController,
+                                    maxLines: 5,
+                                    autofocus: false,
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                        ),
+                                        counterText: '',
+                                        hintText:
+                                            'Hãy nhập lí do bạn hủy yêu cầu cứu hộ...'),
+                                    maxLength: 1000,
+                                  )),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  RaisedButton(
+                                    color: Colors.white,
+                                    child: Text(
+                                      "HỦY YÊU CẦU",
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      if (reasonController.text == null ||
+                                          reasonController.text == '') {
+                                        warningDialog(
+                                          context,
+                                          'Xin hãy nhập lí do bạn hủy yêu cầu này.',
+                                          title: '',
+                                          neutralText: 'Đóng',
+                                          neutralAction: () {
+                                            Navigator.pop(context);
+                                          },
+                                        );
+                                      } else {
+                                        confirmationDialog(context,
+                                            'Bạn có chắc chắn muốn hủy yêu cầu cứu hộ này?',
+                                            title: '',
+                                            confirm: false,
+                                            negativeText: 'Không',
+                                            positiveText: 'Có',
+                                            positiveAction: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  ProgressDialog(
+                                                    message:
+                                                        'Đang hủy yêu cầu...',
+                                                  ));
+                                          _repo
+                                              .cancelFinderForm(
+                                                  widget.finder.finderFormId,
+                                                  reasonController.text)
+                                              .then((value) {
+                                            if (value != null) {
+                                              successDialog(
+                                                context,
+                                                'Yêu cầu cứu hộ đã bị hủy',
+                                                title: 'Đã hủy',
+                                                neutralText: 'Đóng',
+                                                neutralAction: () {
+                                                  Navigator.of(context)
+                                                      .popUntil((route) =>
+                                                          route.isFirst);
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              MyApp()));
+                                                },
+                                              );
+                                            } else {
+                                              warningDialog(
+                                                context,
+                                                'Không thể hủy yêu cầu cứu hộ này.',
+                                                title: '',
+                                                neutralText: 'Đóng',
+                                                neutralAction: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              );
+                                            }
+                                          });
+                                        });
+                                      }
+                                    },
+                                  ),
+                                  SizedBox(width: 8),
+                                  FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      "Đóng",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+              },
+            )
+          ],
           brightness: Brightness.light,
           backgroundColor: Colors.transparent,
           elevation: 0,

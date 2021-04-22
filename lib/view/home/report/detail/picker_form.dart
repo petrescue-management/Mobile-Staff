@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:path/path.dart';
 import 'package:commons/commons.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
@@ -5,6 +6,7 @@ import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+
 import 'package:prs_staff/model/finder_form/finder_form_model.dart';
 import 'package:prs_staff/repository/repository.dart';
 
@@ -37,9 +39,17 @@ class _PickerFormState extends State<PickerForm> {
 
   final _repo = Repository();
 
+  DatabaseReference _memberRef;
+
   @override
   void initState() {
     super.initState();
+
+    _memberRef = FirebaseDatabase.instance
+        .reference()
+        .child('authUser')
+        .child('${widget.finder.insertedBy}')
+        .child('Notification');
   }
 
   Widget buildViewPickedImages() {
@@ -88,7 +98,10 @@ class _PickerFormState extends State<PickerForm> {
                     onTap: () {
                       setState(() {
                         _images.remove(asset);
-                        hasImage = false;
+
+                        if (_images.length == 0) {
+                          hasImage = false;
+                        }
                       });
                     },
                   ),
@@ -162,7 +175,7 @@ class _PickerFormState extends State<PickerForm> {
                       if (value == null) {
                         warningDialog(
                           context,
-                          'Không thể cập nhật yêu cầu.',
+                          'Không thể tạo bản cập nhật yêu cầu cứu hộ.',
                           title: '',
                           neutralText: 'Đóng',
                           neutralAction: () {
@@ -171,8 +184,8 @@ class _PickerFormState extends State<PickerForm> {
                         );
                       } else {
                         _repo
-                            .updateFinderFormStatus(
-                                widget.finder.finderFormId, 3)
+                            .createPetDocument(
+                                value.pickerFormId, widget.finder.finderFormId)
                             .then((value) {
                           if (value == null) {
                             warningDialog(
@@ -185,22 +198,71 @@ class _PickerFormState extends State<PickerForm> {
                               },
                             );
                           } else {
-                            successDialog(
-                              context,
-                              'Đã cập nhật thông tin.',
-                              title: 'Thành công',
-                              neutralText: 'Đóng',
-                              neutralAction: () {
-                                Navigator.of(context)
-                                    .popUntil((route) => route.isFirst);
-                                Navigator.pushReplacement(
+                            _repo
+                                .updateFinderFormStatus(
+                                    widget.finder.finderFormId, 3)
+                                .then((value) {
+                              if (value == null) {
+                                warningDialog(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) => MyApp(),
-                                  ),
+                                  'Không thể cập nhật trạng thái yêu cầu.',
+                                  title: '',
+                                  neutralText: 'Đóng',
+                                  neutralAction: () {
+                                    Navigator.pop(context);
+                                  },
                                 );
-                              },
-                            );
+                              } else {
+                                var currentDate = DateTime.now();
+                                String currentDay = (currentDate.day < 10
+                                    ? '0${currentDate.day}'
+                                    : '${currentDate.day}');
+                                String currentMonth = (currentDate.month < 10
+                                    ? '0${currentDate.month}'
+                                    : '${currentDate.month}');
+                                String currentHour = (currentDate.hour < 10
+                                    ? '0${currentDate.hour}'
+                                    : '${currentDate.hour}');
+                                String currentMinute = (currentDate.minute < 10
+                                    ? '0${currentDate.minute}'
+                                    : '${currentDate.minute}');
+                                String currentSecond = (currentDate.second < 10
+                                    ? '0${currentDate.second}'
+                                    : '${currentDate.second}');
+                                var notiDate =
+                                    '${currentDate.year}-$currentMonth-$currentDay $currentHour:$currentMinute:$currentSecond';
+
+                                Map<String, dynamic> memberNoti = {
+                                  'body':
+                                      'Tình nguyện viên đã đến vị trí cứu hộ.',
+                                  'date': notiDate,
+                                  'titlte':
+                                      'Bạn có thông báo về yêu cầu cứu hộ.',
+                                  'type': 2,
+                                };
+
+                                _memberRef
+                                    .child(widget.finder.finderFormId)
+                                    .set(memberNoti);
+
+                                successDialog(
+                                  context,
+                                  'Đã cập nhật thông tin.',
+                                  title: 'Thành công',
+                                  neutralText: 'Đóng',
+                                  neutralAction: () {
+                                    Navigator.of(context)
+                                        .popUntil((route) => route.isFirst);
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MyApp(),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
+                            });
                           }
                         });
                       }

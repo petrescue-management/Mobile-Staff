@@ -1,33 +1,19 @@
 class PickerFormModel {
+  String pickerFormId;
   String pickerDescription;
-  List<String> pickerImageUrl;
+  String pickerImageUrl;
 
   PickerFormModel({
+    this.pickerFormId,
     this.pickerDescription,
     this.pickerImageUrl,
   });
 
   factory PickerFormModel.fromJson(Map<String,dynamic> json) {
     return PickerFormModel(
+      pickerFormId: json['pickerFormId'],
       pickerDescription: json['pickerDescription'],
       pickerImageUrl: json['pickerImageUrl'],
     );
-  }
-
-  List getImgUrlList(String imgUrl) {
-    List<String> result = [];
-
-    List<String> tmp = imgUrl.split(';');
-    tmp.forEach((item) {
-      if (item == ';') {
-        tmp.remove(item);
-      }
-    });
-
-    tmp.removeLast();
-
-    result = tmp;
-
-    return result;
   }
 }
