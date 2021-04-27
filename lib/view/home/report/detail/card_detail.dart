@@ -180,10 +180,10 @@ class _DetailsState extends State<Details> {
           onTap: () {
             confirmationDialog(
               context,
-              'Bạn chắn chắn muốn nhận yêu cầu này?',
+              'Bạn chắn chắn muốn nhận yêu cầu?',
               title: '',
               confirm: false,
-              negativeText: 'Không',
+              neutralText: 'Không',
               positiveText: 'Có',
               positiveAction: () {
                 showDialog(
@@ -264,10 +264,10 @@ class _DetailsState extends State<Details> {
           onTap: () {
             confirmationDialog(
               context,
-              'Bạn đảm bảo đã mang thú cưng về đến trạm?',
+              'Bạn đảm bảo đã mang thú cưng về đến trung tâm cứu hộ?',
               title: '',
               confirm: false,
-              negativeText: 'Không',
+              neutralText: 'Không',
               positiveText: 'Có',
               positiveAction: () {
                 showDialog(

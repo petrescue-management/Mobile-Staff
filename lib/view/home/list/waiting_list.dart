@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:prs_staff/bloc/finder_bloc.dart';
-import 'package:prs_staff/model/finder_form/finder_form_model.dart';
 import 'package:prs_staff/model/finder_form/finder_form_base_model.dart';
 
 import 'package:prs_staff/src/asset.dart';
@@ -59,9 +58,7 @@ class _WaitingListState extends State<WaitingList> {
               ),
             );
           } else {
-            List<FinderForm> resultList = snapshot.data.result;
-
-            resultList.sort((a, b) => DateTime.parse(b.finderDate)
+            snapshot.data.result.sort((a, b) => DateTime.parse(b.finderDate)
                 .compareTo(DateTime.parse(a.finderDate)));
 
             return Container(
@@ -69,10 +66,9 @@ class _WaitingListState extends State<WaitingList> {
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 controller: scrollController,
-                itemCount: resultList.length,
+                itemCount: snapshot.data.result.length,
                 itemBuilder: (context, index) {
-                  FinderForm result = resultList[index];
-                  return ProgressCard(finder: result);
+                  return ProgressCard(finder: snapshot.data.result[index]);
                 },
               ),
             );

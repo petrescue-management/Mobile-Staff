@@ -17,23 +17,9 @@ class DoneCard extends StatefulWidget {
 }
 
 class _DoneCard extends State<DoneCard> {
-  List<String> imgUrlList;
-  String firstUrl;
-
-  String finderDate;
-  String pickerDate;
-  String status;
-
   @override
   void initState() {
     super.initState();
-    setState(() {
-      imgUrlList = widget.document.finderImageUrl;
-      firstUrl = imgUrlList.elementAt(0);
-
-      finderDate = formatDateTime(widget.document.finderDate);
-      pickerDate = formatDateTime(widget.document.pickerDate);
-    });
   }
 
   formatDateTime(String date) {
@@ -58,7 +44,7 @@ class _DoneCard extends State<DoneCard> {
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        height: MediaQuery.of(context).size.height * 0.15,
+        height: MediaQuery.of(context).size.height * 0.13,
         child: Stack(
           children: [
             Container(
@@ -73,7 +59,7 @@ class _DoneCard extends State<DoneCard> {
                         bottomLeft: Radius.circular(18),
                       ),
                       image: DecorationImage(
-                        image: NetworkImage(firstUrl),
+                        image: NetworkImage(widget.document.finderImageUrl.elementAt(0)),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -101,18 +87,17 @@ class _DoneCard extends State<DoneCard> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Ngày yêu cầu: $finderDate',
+                                  'Ngày yêu cầu: ${formatDateTime(widget.document.finderDate)}',
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: fadedBlack,
                                   ),
                                 ),
                                 Text(
-                                  'Ngày cứu hộ: $pickerDate',
+                                  'Ngày cứu hộ: ${formatDateTime(widget.document.pickerDate)}',
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: fadedBlack,
-                                    fontStyle: FontStyle.italic,
                                   ),
                                 ),
                               ],

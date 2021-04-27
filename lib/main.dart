@@ -1,3 +1,4 @@
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -19,6 +20,14 @@ void main() => runApp(
       ChangeNotifierProvider(
         create: (context) => AppData(),
         child: MaterialApp(
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: [
+            const Locale.fromSubtags(languageCode: 'vi'),
+          ],
+          locale: const Locale('vi'),
           theme: ThemeData(fontFamily: 'Philosopher'),
           initialRoute: '/',
           debugShowCheckedModeBanner: false,
@@ -140,6 +149,4 @@ class _MyApp extends State<MyApp> {
           }),
     );
   }
-
-  
 }
