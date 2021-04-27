@@ -38,9 +38,7 @@ class _PersonalPageState extends State<PersonalPage> {
     SharedPreferences.getInstance().then((value) => {
           setState(() {
             avatar = value.getString('avatar');
-            print(avatar);
             fullname = value.getString('fullname');
-            print(fullname);
           })
         });
   }

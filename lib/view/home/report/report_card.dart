@@ -23,38 +23,20 @@ class ProgressCard extends StatefulWidget {
 }
 
 class _ProgressCard extends State<ProgressCard> {
-  List<String> imgUrlList;
-  String firstUrl;
-
-  double latitude, longitude;
   Position finderPosition;
   String finderAddress = '';
-
-  String finderDate;
-  String status;
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      imgUrlList = widget.finder.finderImageUrl;
-      firstUrl = imgUrlList.elementAt(0);
-
-      latitude = widget.finder.lat;
-      longitude = widget.finder.lng;
-
-      finderDate = formatDateTime(widget.finder.finderDate);
-
-      status = getFinderFormStatus(widget.finder.finderFormStatus);
-    });
-
     locateUserAddressPosition();
   }
 
   locateUserAddressPosition() async {
     String address = '';
 
-    finderPosition = Position(latitude: latitude, longitude: longitude);
+    finderPosition =
+        Position(latitude: widget.finder.lat, longitude: widget.finder.lng);
 
     address = await Assistant.searchCoordinateAddress(finderPosition, context);
 
@@ -143,7 +125,8 @@ class _ProgressCard extends State<ProgressCard> {
                         bottomLeft: Radius.circular(18),
                       ),
                       image: DecorationImage(
-                        image: NetworkImage(firstUrl),
+                        image: NetworkImage(
+                            widget.finder.finderImageUrl.elementAt(0)),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -172,14 +155,22 @@ class _ProgressCard extends State<ProgressCard> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Ngày yêu cầu: $finderDate',
+                                  'Ngày yêu cầu: ${formatDateTime(widget.finder.finderDate)}',
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: fadedBlack,
                                   ),
                                 ),
                                 Text(
-                                  status == null || status == '' ? '' : status,
+                                  getFinderFormStatus(widget
+                                                  .finder.finderFormStatus) ==
+                                              null ||
+                                          getFinderFormStatus(widget
+                                                  .finder.finderFormStatus) ==
+                                              ''
+                                      ? ''
+                                      : getFinderFormStatus(
+                                          widget.finder.finderFormStatus),
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: fadedBlack,
