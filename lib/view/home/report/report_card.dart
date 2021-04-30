@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:prs_staff/src/style.dart';
 
@@ -125,7 +126,7 @@ class _ProgressCard extends State<ProgressCard> {
                         bottomLeft: Radius.circular(18),
                       ),
                       image: DecorationImage(
-                        image: NetworkImage(
+                        image: CachedNetworkImageProvider(
                             widget.finder.finderImageUrl.elementAt(0)),
                         fit: BoxFit.cover,
                       ),
@@ -173,7 +174,7 @@ class _ProgressCard extends State<ProgressCard> {
                                           widget.finder.finderFormStatus),
                                   style: TextStyle(
                                     fontSize: 13,
-                                    color: fadedBlack,
+                                    color: primaryGreen,
                                     fontStyle: FontStyle.italic,
                                   ),
                                 ),

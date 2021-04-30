@@ -70,7 +70,7 @@ class FinderFormProvider {
     return null;
   }
 
-  Future<bool> updateFinderFormStatus(String finderFormId, int status) async{
+  Future<bool> updateFinderFormStatus(String finderFormId, int status) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var jwtToken = sharedPreferences.getString('token');
 
@@ -89,15 +89,20 @@ class FinderFormProvider {
       body: str,
     );
 
+    // 200 - tnv nhận đơn thành công
+    // 400 - đã có tnv nhận đơn
+    // null - lỗi hệ thống
     if (response.statusCode == 200) {
       return true;
-    } else {
+    } else if (response.statusCode == 400) {
       print('Failed to load post ${response.statusCode}');
+      return false;
     }
+    print('Failed to load post ${response.statusCode}');
     return null;
   }
 
-    Future<bool> cancelFinderForm(String finderFormId, String reason) async {
+  Future<bool> cancelFinderForm(String finderFormId, String reason) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var jwtToken = sharedPreferences.getString('token');
 
@@ -115,35 +120,6 @@ class FinderFormProvider {
       },
       body: str,
     );
-
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      print('Failed to load post ${response.statusCode}');
-    }
-    return null;
-  }
-  
-  Future<bool> createPickerForm(String pickerDescription, String pickerImageUrl) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var jwtToken = sharedPreferences.getString('token');
-
-    var resBody = {};
-    resBody['pickerDescription'] = pickerDescription;
-    resBody['pickerImageUrl'] = pickerImageUrl;
-
-    String str = json.encode(resBody);
-
-    final response = await http.post(
-      ApiUrl.createPickerForm,
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ' + jwtToken,
-      },
-      body: str,
-    );
-
-    print(str);
 
     if (response.statusCode == 200) {
       return true;

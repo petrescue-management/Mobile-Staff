@@ -24,7 +24,7 @@ class _DoneCard extends State<DoneCard> {
 
   formatDateTime(String date) {
     DateTime tmp = DateTime.parse(date);
-    String result = '${tmp.day}/${tmp.month}/${tmp.year}';
+    String result = '${tmp.day}/${tmp.month}/${tmp.year} - ${tmp.hour}:${tmp.minute}';
     return result;
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:commons/commons.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 import 'package:prs_staff/model/finder_form/finder_form_model.dart';
 import 'package:prs_staff/repository/repository.dart';
@@ -30,6 +31,19 @@ class _ProcessingCardDetailState extends State<ProcessingCardDetail> {
   TextEditingController reasonController = TextEditingController();
 
   final _repo = Repository();
+
+  DatabaseReference _memberRef;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _memberRef = FirebaseDatabase.instance
+        .reference()
+        .child('authUser')
+        .child('${widget.finder.insertedBy}')
+        .child('Notification');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +130,7 @@ class _ProcessingCardDetailState extends State<ProcessingCardDetail> {
                                         ),
                                         counterText: '',
                                         hintText:
-                                            'Hãy nhập lí do bạn hủy yêu cầu cứu hộ...'),
+                                            'Hãy nhập lí do bạn hủy yêu cầu...'),
                                     maxLength: 1000,
                                   )),
                               Row(
@@ -136,16 +150,13 @@ class _ProcessingCardDetailState extends State<ProcessingCardDetail> {
                                           reasonController.text == '') {
                                         warningDialog(
                                           context,
-                                          'Xin hãy nhập lí do bạn hủy yêu cầu này.',
+                                          'Xin hãy nhập lí do bạn hủy yêu cầu.',
                                           title: '',
                                           neutralText: 'Đóng',
-                                          neutralAction: () {
-                                            Navigator.pop(context);
-                                          },
                                         );
                                       } else {
-                                        confirmationDialog(context,
-                                            'Bạn có chắc chắn muốn hủy yêu cầu cứu hộ này?',
+                                        confirmationDialog(
+                                            context, 'Hủy yêu cầu cứu hộ?',
                                             title: '',
                                             confirm: false,
                                             negativeText: 'Không',
@@ -164,6 +175,45 @@ class _ProcessingCardDetailState extends State<ProcessingCardDetail> {
                                                   reasonController.text)
                                               .then((value) {
                                             if (value != null) {
+                                              var currentDate = DateTime.now();
+                                              String currentDay =
+                                                  (currentDate.day < 10
+                                                      ? '0${currentDate.day}'
+                                                      : '${currentDate.day}');
+                                              String currentMonth =
+                                                  (currentDate.month < 10
+                                                      ? '0${currentDate.month}'
+                                                      : '${currentDate.month}');
+                                              String currentHour =
+                                                  (currentDate.hour < 10
+                                                      ? '0${currentDate.hour}'
+                                                      : '${currentDate.hour}');
+                                              String currentMinute =
+                                                  (currentDate.minute < 10
+                                                      ? '0${currentDate.minute}'
+                                                      : '${currentDate.minute}');
+                                              String currentSecond =
+                                                  (currentDate.second < 10
+                                                      ? '0${currentDate.second}'
+                                                      : '${currentDate.second}');
+                                              var notiDate =
+                                                  '${currentDate.year}-$currentMonth-$currentDay $currentHour:$currentMinute:$currentSecond';
+
+                                              Map<String, dynamic> memberNoti =
+                                                  {
+                                                'body':
+                                                    'Yêu cầu của bạn đã bị tình nguyện viên hủy với lí do ${reasonController.text}.',
+                                                'date': notiDate,
+                                                'titlte':
+                                                    'Bạn có thông báo về yêu cầu cứu hộ.',
+                                                'type': 2,
+                                              };
+
+                                              _memberRef
+                                                  .child(widget
+                                                      .finder.finderFormId)
+                                                  .set(memberNoti);
+
                                               successDialog(
                                                 context,
                                                 'Yêu cầu cứu hộ đã bị hủy',
@@ -250,13 +300,13 @@ class _ProcessingCardDetailState extends State<ProcessingCardDetail> {
       labelColor: Colors.black,
       labelStyle: TextStyle(
         fontSize: 16,
-        fontFamily: 'Philosopher',
+        fontFamily: 'SamsungSans',
         fontWeight: FontWeight.bold,
       ),
       indicatorColor: mainColor,
       tabs: <Widget>[
-        Tab(text: 'Bản đồ'),
         Tab(text: 'Chi tiết'),
+        Tab(text: 'Bản đồ'),
         Tab(text: 'Cập nhật'),
       ],
     );
@@ -264,8 +314,8 @@ class _ProcessingCardDetailState extends State<ProcessingCardDetail> {
 
   Widget buildTabBody() {
     return TabBarView(children: [
-      FinderLocation(finder: widget.finder),
       Details(finder: widget.finder),
+      FinderLocation(finder: widget.finder),
       PickerForm(finder: widget.finder),
     ]);
   }

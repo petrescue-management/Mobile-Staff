@@ -78,21 +78,22 @@ class _DeliveringCardDetailState extends State<DeliveringCardDetail> {
       labelColor: Colors.black,
       labelStyle: TextStyle(
         fontSize: 16,
-        fontFamily: 'Philosopher',
+        fontFamily: 'SamsungSans',
         fontWeight: FontWeight.bold,
       ),
       indicatorColor: mainColor,
       tabs: <Widget>[
-        Tab(text: 'Bản đồ'),
         Tab(text: 'Chi tiết'),
+        Tab(text: 'Bản đồ'),
+        
       ],
     );
   }
 
   Widget buildTabBody() {
     return TabBarView(children: [
-      FinderLocation(finder: widget.finder),
       Details(finder: widget.finder),
+      FinderLocation(finder: widget.finder),
     ]);
   }
 }

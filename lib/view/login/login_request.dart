@@ -5,8 +5,6 @@ import 'package:prs_staff/repository/repository.dart';
 
 import 'package:prs_staff/src/asset.dart';
 import 'package:prs_staff/src/style.dart';
-import 'package:prs_staff/src/data.dart';
-
 import 'package:prs_staff/view/custom_widget/custom_button.dart';
 import 'package:prs_staff/view/custom_widget/custom_dialog.dart';
 
@@ -61,13 +59,13 @@ class _LoginRequestState extends State<LoginRequest> {
                             text: 'Chào mừng bạn đến với\n',
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 28,
-                                fontFamily: 'Philosopher'),
+                                fontSize: 24,
+                                fontFamily: 'SamsungSans'),
                           ),
                           TextSpan(
                             text: 'RESCUE ME',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: mainColor,
                               fontSize: 36,
                               fontFamily: 'Salsa',
                               letterSpacing: 2,
@@ -95,12 +93,6 @@ class _LoginRequestState extends State<LoginRequest> {
                           _signInButton(),
                           SizedBox(
                             height: 20,
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 45),
-                            child: SizedBox(
-                              child: loginNotice(context),
-                            ),
                           ),
                         ],
                       ),

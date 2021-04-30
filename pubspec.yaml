@@ -48,6 +48,7 @@ dependencies:
   flutter_form_builder: ^3.12.0
   flutter_local_notifications: ^1.4.4+1
   
+  cached_network_image: ^2.0.0
   image_picker: ^0.6.7+2
   multi_image_picker: ^4.6.7
   video_player: ^0.10.11+2
@@ -107,10 +108,10 @@ flutter:
     - family: Salsa
       fonts:
       - asset: assets/fonts/Salsa-Regular.ttf
-    - family: Philosopher
+    - family: SamsungSans
       fonts:
-        - asset: assets/fonts/Philosopher.ttf
-        - asset: assets/fonts/Philosopher Bold.ttf
+        - asset: assets/fonts/samsung/SamsungSans-Regular.ttf
+        - asset: assets/fonts/samsung/SamsungSans-Bold.ttf
           weight: 700
         
   

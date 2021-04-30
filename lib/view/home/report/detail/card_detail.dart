@@ -35,7 +35,6 @@ class _DetailsState extends State<Details> {
   final _repo = Repository();
 
   DatabaseReference _memberRef;
-  DatabaseReference _centerRef;
 
   List<String> imgUrlList;
   List<Widget> imageSliders;
@@ -63,14 +62,6 @@ class _DetailsState extends State<Details> {
         .child('authUser')
         .child('${widget.finder.insertedBy}')
         .child('Notification');
-
-    _repo.getUserDetails().then((value) {
-      _centerRef = FirebaseDatabase.instance
-          .reference()
-          .child('manager')
-          .child('${value.centerId}')
-          .child('Notification');
-    });
 
     setState(() {
       petAttribute = getPetAttribute(widget.finder.petAttribute);
@@ -180,7 +171,7 @@ class _DetailsState extends State<Details> {
           onTap: () {
             confirmationDialog(
               context,
-              'Bạn chắn chắn muốn nhận yêu cầu?',
+              'Nhận yêu cầu cứu hộ?',
               title: '',
               confirm: false,
               neutralText: 'Không',
@@ -195,8 +186,35 @@ class _DetailsState extends State<Details> {
                     .updateFinderFormStatus(widget.finder.finderFormId, 2)
                     .then((value) {
                   if (value == null) {
-                    warningDialog(context, 'Lỗi hệ thống', title: '');
+                    warningDialog(context, 'Lỗi hệ thống',
+                        neutralText: 'Đóng', title: '', neutralAction: () {
+                      Navigator.pop(context);
+                    });
+                  } else if (value == false) {
+                    warningDialog(
+                        context, 'Đã có tình nguyện viên nhận yêu cầu này.',
+                        neutralText: 'Đóng', title: '', neutralAction: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    });
                   } else {
+                    successDialog(
+                      context,
+                      'Đã nhận yêu cầu.',
+                      title: 'Thành công',
+                      neutralText: 'Quay lại trang chủ',
+                      neutralAction: () {
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MyApp(),
+                          ),
+                        );
+                      },
+                    );
+
                     var currentDate = DateTime.now();
                     String currentDay = (currentDate.day < 10
                         ? '0${currentDate.day}'
@@ -216,18 +234,8 @@ class _DetailsState extends State<Details> {
                     var notiDate =
                         '${currentDate.year}-$currentMonth-$currentDay $currentHour:$currentMinute:$currentSecond';
 
-                    Map<String, dynamic> centerNoti = {
-                      'date': notiDate,
-                      'isCheck': false,
-                      'type': 2,
-                    };
-
-                    _centerRef
-                        .child(widget.finder.finderFormId)
-                        .set(centerNoti);
-
                     Map<String, dynamic> memberNoti = {
-                      'body': 'Yêu cầu cứu hộ của bạn đang được xử lý.',
+                      'body': 'Tình nguyện viên đã nhận yêu cầu của bạn.',
                       'date': notiDate,
                       'titlte': 'Bạn có thông báo về yêu cầu cứu hộ.',
                       'type': 2,
@@ -236,23 +244,6 @@ class _DetailsState extends State<Details> {
                     _memberRef
                         .child(widget.finder.finderFormId)
                         .set(memberNoti);
-
-                    successDialog(
-                      context,
-                      'Đã nhận yêu cầu.',
-                      title: 'Thành công',
-                      neutralText: 'Đóng',
-                      neutralAction: () {
-                        Navigator.of(context)
-                            .popUntil((route) => route.isFirst);
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MyApp(),
-                          ),
-                        );
-                      },
-                    );
                   }
                 });
               },
@@ -264,7 +255,7 @@ class _DetailsState extends State<Details> {
           onTap: () {
             confirmationDialog(
               context,
-              'Bạn đảm bảo đã mang thú cưng về đến trung tâm cứu hộ?',
+              'Đã mang thú nuôi về đến trung tâm cứu hộ?',
               title: '',
               confirm: false,
               neutralText: 'Không',
@@ -281,6 +272,24 @@ class _DetailsState extends State<Details> {
                   if (value == null) {
                     warningDialog(context, 'Lỗi hệ thống', title: '');
                   } else {
+
+                    successDialog(
+                      context,
+                      'Đã hoàn thành yêu cầu.',
+                      title: 'Thành công',
+                      neutralText: 'Quay lại trang chủ',
+                      neutralAction: () {
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MyApp(),
+                          ),
+                        );
+                      },
+                    );
+
                     var currentDate = DateTime.now();
                     String currentDay = (currentDate.day < 10
                         ? '0${currentDate.day}'
@@ -301,30 +310,16 @@ class _DetailsState extends State<Details> {
                         '${currentDate.year}-$currentMonth-$currentDay $currentHour:$currentMinute:$currentSecond';
 
                     Map<String, dynamic> memberNoti = {
-                      'body': 'Yêu cầu cứu hộ của bạn đã hoàn thành.',
+                      'body':
+                          'Tình nguyện viên đã mang thú nuôi về trung tâm cứu hộ. Cảm ơn sự giúp đỡ của bạn.',
                       'date': notiDate,
                       'titlte': 'Bạn có thông báo về yêu cầu cứu hộ.',
                       'type': 2,
                     };
 
-                    _memberRef.child(widget.finder.finderFormId).set(memberNoti);
-
-                    successDialog(
-                      context,
-                      'Đã hoàn thành yêu cầu.',
-                      title: 'Thành công',
-                      neutralText: 'Đóng',
-                      neutralAction: () {
-                        Navigator.of(context)
-                            .popUntil((route) => route.isFirst);
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MyApp(),
-                          ),
-                        );
-                      },
-                    );
+                    _memberRef
+                        .child(widget.finder.finderFormId)
+                        .set(memberNoti);
                   }
                 });
               },

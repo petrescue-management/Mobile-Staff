@@ -52,9 +52,6 @@ class Repository {
   Future<FinderFormProcessingModel> getDeliveringFinderForms() =>
       finderFormProvider.getDeliveringFinderForms();
 
-  Future<DoneBaseModel> getDoneFinderForms() =>
-      documentProvider.getDoneFinderForms();
-
   Future<bool> updateFinderFormStatus(String finderFormId, int status) =>
       finderFormProvider.updateFinderFormStatus(finderFormId, status);
 
@@ -74,4 +71,8 @@ class Repository {
 
   Future<bool> createPetDocument(String pickerId, String finderId) =>
       documentProvider.createPetDocument(pickerId, finderId);
+
+  // done
+  Future<DoneBaseModel> getDoneFinderForms() =>
+      documentProvider.getDoneFinderForms();
 }

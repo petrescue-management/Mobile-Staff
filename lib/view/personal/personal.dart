@@ -11,7 +11,6 @@ import 'package:prs_staff/src/asset.dart';
 
 import 'package:prs_staff/view/custom_widget/custom_dialog.dart';
 import 'package:prs_staff/view/personal/config_menu.dart';
-import 'package:prs_staff/view/personal/policy/policy.dart';
 import 'package:prs_staff/view/personal/profile/profile_details.dart';
 import 'package:prs_staff/view/home/done/done_list.dart';
 
@@ -199,7 +198,7 @@ class _PersonalPageState extends State<PersonalPage> {
               Container(
                 child: ConfigMenu(
                   text: 'Yêu cầu đã hoàn thành',
-                  icon: Icons.account_circle,
+                  icon: Icons.done_all,
                   press: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -210,19 +209,6 @@ class _PersonalPageState extends State<PersonalPage> {
                     );
                   },
                 ),
-              ),
-              ConfigMenu(
-                text: 'Điều khoản',
-                icon: Icons.policy,
-                press: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return PolicyPage();
-                      },
-                    ),
-                  );
-                },
               ),
               ConfigMenu(
                 text: 'Đăng xuất',
