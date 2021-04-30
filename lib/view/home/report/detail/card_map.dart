@@ -136,7 +136,6 @@ class _FinderLocationState extends State<FinderLocation> {
           padding:
               EdgeInsets.only(bottom: bottomPaddingMap, top: topPaddingMap),
           mapType: MapType.normal,
-          myLocationButtonEnabled: true,
           initialCameraPosition: FinderLocation._kGooglePlex,
           zoomGesturesEnabled: true,
           zoomControlsEnabled: true,

@@ -28,7 +28,7 @@ void main() => runApp(
             const Locale.fromSubtags(languageCode: 'vi'),
           ],
           locale: const Locale('vi'),
-          theme: ThemeData(fontFamily: 'Philosopher'),
+          theme: ThemeData(fontFamily: 'SamsungSans'),
           initialRoute: '/',
           debugShowCheckedModeBanner: false,
           routes: {

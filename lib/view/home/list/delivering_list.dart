@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:commons/commons.dart';
 
 import 'package:prs_staff/bloc/finder_bloc.dart';
+import 'package:prs_staff/repository/repository.dart';
 import 'package:prs_staff/model/finder_form/finder_form_processing.dart';
 
 import 'package:prs_staff/src/asset.dart';
 
 import 'package:prs_staff/view/custom_widget/custom_dialog.dart';
 import 'package:prs_staff/view/home/report/report_card.dart';
+
+import 'package:prs_staff/main.dart';
 
 class DeliveringList extends StatefulWidget {
   @override
@@ -15,10 +19,29 @@ class DeliveringList extends StatefulWidget {
 
 class _DeliveringListState extends State<DeliveringList> {
   ScrollController scrollController = ScrollController();
+  final _repo = Repository();
 
   @override
   void initState() {
     super.initState();
+
+    _repo.getUserDetails().then((value) {
+      if (value == null) {
+        infoDialog(
+          context,
+          'Phiên đăng nhập của bạn đã hết.',
+          title: 'Thông báo',
+          neutralText: 'Đăng xuất',
+          neutralAction: () {
+            _repo.signOut();
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => MyApp()));
+          },
+        );
+      }
+    });
+
     finderBloc.getDeliveringList();
   }
 

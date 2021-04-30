@@ -34,12 +34,13 @@ class _PickerFormState extends State<PickerForm> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
 
   List<Asset> _images = List<Asset>();
-
+  int limitImg;
   bool hasImage = false;
 
   final _repo = Repository();
 
   DatabaseReference _memberRef;
+  DatabaseReference _centerRef;
 
   @override
   void initState() {
@@ -50,6 +51,31 @@ class _PickerFormState extends State<PickerForm> {
         .child('authUser')
         .child('${widget.finder.insertedBy}')
         .child('Notification');
+
+    _repo.getUserDetails().then((value) {
+      _centerRef = FirebaseDatabase.instance
+          .reference()
+          .child('manager')
+          .child('${value.centerId}')
+          .child('Notification');
+    });
+
+    getlitmitImgForVolunteer();
+  }
+
+  getlitmitImgForVolunteer() async {
+    await FirebaseDatabase.instance
+        .reference()
+        .child('config')
+        .child('limitImgForVolunteer')
+        .once()
+        .then((DataSnapshot snapshot) {
+      int result = snapshot.value;
+
+      setState(() {
+        limitImg = result;
+      });
+    });
   }
 
   Widget buildViewPickedImages() {
@@ -118,7 +144,7 @@ class _PickerFormState extends State<PickerForm> {
 
     try {
       resultList = await MultiImagePicker.pickImages(
-        maxImages: 6,
+        maxImages: limitImg,
         enableCamera: true,
         selectedAssets: _images,
         materialOptions: MaterialOptions(
@@ -143,7 +169,7 @@ class _PickerFormState extends State<PickerForm> {
   _btnSubmitInformation(bool hasImage, BuildContext context) {
     if (hasImage == true) {
       return CustomButton(
-        label: 'ĐÃ ĐẾN CHỖ THÚ CƯNG',
+        label: 'ĐÃ TÌM THẤY THÚ CƯNG',
         onTap: () {
           if (_fbKey.currentState.saveAndValidate()) {
             final formInputs = _fbKey.currentState.value;
@@ -213,6 +239,24 @@ class _PickerFormState extends State<PickerForm> {
                                   },
                                 );
                               } else {
+
+                                successDialog(
+                                  context,
+                                  'Đã cập nhật thông tin.',
+                                  title: 'Thành công',
+                                  neutralText: 'Đóng',
+                                  neutralAction: () {
+                                    Navigator.of(context)
+                                        .popUntil((route) => route.isFirst);
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MyApp(),
+                                      ),
+                                    );
+                                  },
+                                );
+                                
                                 var currentDate = DateTime.now();
                                 String currentDay = (currentDate.day < 10
                                     ? '0${currentDate.day}'
@@ -232,6 +276,16 @@ class _PickerFormState extends State<PickerForm> {
                                 var notiDate =
                                     '${currentDate.year}-$currentMonth-$currentDay $currentHour:$currentMinute:$currentSecond';
 
+                                Map<String, dynamic> centerNoti = {
+                                  'date': notiDate,
+                                  'isCheck': false,
+                                  'type': 2,
+                                };
+
+                                _centerRef
+                                    .child(widget.finder.finderFormId)
+                                    .set(centerNoti);
+
                                 Map<String, dynamic> memberNoti = {
                                   'body':
                                       'Tình nguyện viên đã đến vị trí cứu hộ.',
@@ -244,23 +298,6 @@ class _PickerFormState extends State<PickerForm> {
                                 _memberRef
                                     .child(widget.finder.finderFormId)
                                     .set(memberNoti);
-
-                                successDialog(
-                                  context,
-                                  'Đã cập nhật thông tin.',
-                                  title: 'Thành công',
-                                  neutralText: 'Đóng',
-                                  neutralAction: () {
-                                    Navigator.of(context)
-                                        .popUntil((route) => route.isFirst);
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => MyApp(),
-                                      ),
-                                    );
-                                  },
-                                );
                               }
                             });
                           }
@@ -386,6 +423,9 @@ class _PickerFormState extends State<PickerForm> {
                           width: 10,
                         ),
                         RaisedButton(
+                          color: Colors.blue[400],
+                          textColor: Colors.white,
+                          splashColor: Colors.grey,
                           child: Text("Chọn ảnh"),
                           onPressed: pickImages,
                         ),
@@ -431,7 +471,7 @@ class _PickerFormState extends State<PickerForm> {
                         errorText: 'Hãy thêm mô tả về tình trạng của bé.'),
                   ],
                   maxLines: 6,
-                  maxLength: 500,
+                  maxLength: 1000,
                 ),
               ),
             ],

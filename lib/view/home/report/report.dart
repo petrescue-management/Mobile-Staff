@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prs_staff/bloc/finder_bloc.dart';
 
 import 'package:prs_staff/src/style.dart';
 
@@ -14,6 +15,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    finderBloc.getDeliveringList();
+    finderBloc.getWaitingList();
+    finderBloc.getProcessingList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +83,7 @@ class _HomePageState extends State<HomePage> {
       labelColor: Colors.black,
       labelStyle: TextStyle(
         fontSize: 15,
-        fontFamily: 'Philosopher',
+        fontFamily: 'SamsungSans',
         fontWeight: FontWeight.bold,
       ),
       indicatorColor: mainColor,

@@ -78,7 +78,7 @@ class _DoneCardDetailState extends State<DoneCardDetail> {
       labelColor: Colors.black,
       labelStyle: TextStyle(
         fontSize: 16,
-        fontFamily: 'Philosopher',
+        fontFamily: 'SamsungSans',
         fontWeight: FontWeight.bold,
       ),
       indicatorColor: mainColor,

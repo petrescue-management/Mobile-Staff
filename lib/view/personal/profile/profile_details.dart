@@ -376,7 +376,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
               maxLines: 2,
               decoration: InputDecoration(
                 floatingLabelBehavior: FloatingLabelBehavior.always,
-                labelText: 'Email*',
+                labelText: 'Làm việc tại',
                 labelStyle: TextStyle(
                   color: mainColor,
                 ),
@@ -406,7 +406,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
               controller: emailController,
               decoration: InputDecoration(
                 floatingLabelBehavior: FloatingLabelBehavior.always,
-                labelText: 'Email*',
+                labelText: 'Email',
                 labelStyle: TextStyle(
                   color: mainColor,
                 ),
