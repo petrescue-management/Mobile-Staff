@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:prs_staff/model/done_form.dart';
 import 'package:prs_staff/src/style.dart';
@@ -59,7 +60,7 @@ class _DoneCard extends State<DoneCard> {
                         bottomLeft: Radius.circular(18),
                       ),
                       image: DecorationImage(
-                        image: NetworkImage(widget.document.finderImageUrl.elementAt(0)),
+                        image: CachedNetworkImageProvider(widget.document.finderImageUrl.elementAt(0)),
                         fit: BoxFit.cover,
                       ),
                     ),
