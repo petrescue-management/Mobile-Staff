@@ -202,7 +202,7 @@ class _ProcessingCardDetailState extends State<ProcessingCardDetail> {
                                               Map<String, dynamic> memberNoti =
                                                   {
                                                 'body':
-                                                    'Yêu cầu của bạn đã bị tình nguyện viên hủy với lí do ${reasonController.text}.',
+                                                    'Yêu cầu của bạn đã bị hủy bởi tình nguyện viên.',
                                                 'date': notiDate,
                                                 'titlte':
                                                     'Bạn có thông báo về yêu cầu cứu hộ.',
