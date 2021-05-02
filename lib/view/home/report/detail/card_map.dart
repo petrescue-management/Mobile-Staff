@@ -75,6 +75,7 @@ class _FinderLocationState extends State<FinderLocation> {
     Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.best,
     );
+    print('position: $position');
 
     finderPosition = Position(latitude: lat, longitude: lng);
     print(finderPosition);
