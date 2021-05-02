@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:commons/commons.dart';
@@ -144,7 +145,7 @@ class _PersonalPageState extends State<PersonalPage> {
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.white, width: 2),
                 image: DecorationImage(
-                  image: NetworkImage(user.imgUrl),
+                  image: CachedNetworkImageProvider(user.imgUrl),
                   fit: BoxFit.cover,
                 ),
               ),

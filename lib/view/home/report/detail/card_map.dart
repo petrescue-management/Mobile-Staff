@@ -75,7 +75,6 @@ class _FinderLocationState extends State<FinderLocation> {
     Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.best,
     );
-    print('position: $position');
 
     finderPosition = Position(latitude: lat, longitude: lng);
     print(finderPosition);
@@ -178,7 +177,7 @@ class _FinderLocationState extends State<FinderLocation> {
                   controller: addressTextController == null
                       ? ''
                       : addressTextController,
-                  style: TextStyle(height: 1.3),
+                  style: TextStyle(height: 1.2),
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     isDense: true,
@@ -188,7 +187,7 @@ class _FinderLocationState extends State<FinderLocation> {
                       size: 25,
                     ),
                   ),
-                  maxLines: 5,
+                  maxLines: 4,
                 ),
               ),
             ),
