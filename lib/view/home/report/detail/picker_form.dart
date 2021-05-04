@@ -319,7 +319,7 @@ class _PickerFormState extends State<PickerForm> {
       );
     } else {
       return CustomDisableButton(
-        label: 'ĐÃ ĐẾN CHỖ THÚ CƯNG',
+        label: 'ĐÃ TÌM THẤY THÚ CƯNG',
       );
     }
   }
