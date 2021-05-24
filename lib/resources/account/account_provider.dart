@@ -102,4 +102,55 @@ class AccountProvider {
     }
     return null;
   }
-}
+
+  Future<bool> changeVolunteerStatus(int status) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var jwtToken = sharedPreferences.getString('token');
+
+    var resBody = {};
+    resBody['status'] = status;
+
+    String str = json.encode(resBody);
+    print(str);
+
+    final response = await http.post(
+      ApiUrl.updateVolunteerStatus,
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ' + jwtToken,
+      },
+      body: str,
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+    return null;
+  }
+
+  Future<bool> updateLocation(double lat, double long) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var jwtToken = sharedPreferences.getString('token');
+
+    var resBody = {};
+    resBody['lat'] = lat;
+    resBody['long'] = long;
+
+    String str = json.encode(resBody);
+    print(str);
+
+    final response = await http.post(
+      ApiUrl.updateLocation,
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ' + jwtToken,
+      },
+      body: str,
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+    return null;
+  }
+} 

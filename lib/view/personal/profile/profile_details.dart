@@ -41,7 +41,6 @@ class _ProfileDetailsState extends State<ProfileDetails> {
   TextEditingController dobController = TextEditingController();
 
   TextEditingController tmpDateController = TextEditingController();
-  TextEditingController centerNameController = TextEditingController();
 
   final _repo = Repository();
 
@@ -60,7 +59,6 @@ class _ProfileDetailsState extends State<ProfileDetails> {
       dobController.text = widget.user.dob;
 
       tmpDateController.text = formatDateTime(dobController.text);
-      centerNameController.text = widget.user.centerName;
     });
   }
 
@@ -370,37 +368,6 @@ class _ProfileDetailsState extends State<ProfileDetails> {
         controller: scrollController,
         child: Column(
           children: <Widget>[
-            //* CENTER
-            TextFormField(
-              controller: centerNameController,
-              maxLines: 2,
-              decoration: InputDecoration(
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                labelText: 'Làm việc tại',
-                labelStyle: TextStyle(
-                  color: mainColor,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: mainColor,
-                    width: 2,
-                  ),
-                ),
-                fillColor: Colors.white,
-                filled: true,
-                enabled: false,
-                prefixIcon: Icon(
-                  Icons.business_center,
-                  color: mainColor,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
             //* EMAIL
             TextFormField(
               controller: emailController,

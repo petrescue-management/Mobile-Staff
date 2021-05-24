@@ -4,12 +4,15 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:prs_staff/model/center_model.dart';
 
 import 'package:prs_staff/model/done_form.dart';
 import 'package:prs_staff/model/picker_form_model.dart';
+import 'package:prs_staff/model/system_config.dart';
 import 'package:prs_staff/model/user_model.dart';
 import 'package:prs_staff/model/finder_form/finder_form_base_model.dart';
 import 'package:prs_staff/model/finder_form/finder_form_processing.dart';
+import 'package:prs_staff/resources/report/center_provider.dart';
 
 import 'package:prs_staff/resources/report/document_provider.dart';
 import 'package:prs_staff/resources/report/finder_form_provider.dart';
@@ -23,6 +26,7 @@ class Repository {
   final finderFormProvider = FinderFormProvider();
   final pickerFormProvider = PickerFormProvider();
   final documentProvider = DocumentProvider();
+  final centerProvider = CenterProvider();
 
   // user
   Future<String> signIn() => firebaseProvider.signInWithGoogle();
@@ -42,6 +46,12 @@ class Repository {
   Future<String> uploadAvatar(File image, String uid) =>
       firebaseProvider.uploadAvatar(image, uid);
 
+  Future<bool> changeVolunteerStatus(int status) =>
+      accountProvider.changeVolunteerStatus(status);
+
+  Future<bool> updateLocation(double lat, double lng) =>
+      accountProvider.updateLocation(lat, lng);
+
   // finder form
   Future<FinderFormBaseModel> getWaitingFinderForms() =>
       finderFormProvider.getWaitingFinderForms();
@@ -59,6 +69,9 @@ class Repository {
       finderFormProvider.cancelFinderForm(finderFormId, reason);
 
   // picker form
+  Future<ConfigModel> getNumberOfImage() =>
+      pickerFormProvider.getNumberOfImage();
+
   Future<PickerFormModel> createPickerForm(
           String pickerDescription, String pickerImageUrl) =>
       pickerFormProvider.createPickerForm(pickerDescription, pickerImageUrl);
@@ -71,6 +84,10 @@ class Repository {
 
   Future<bool> createPetDocument(String pickerId, String finderId) =>
       documentProvider.createPetDocument(pickerId, finderId);
+
+  // center
+  Future<CenterList> getCenterList(String finderFormId) =>
+      centerProvider.getCenterList(finderFormId);
 
   // done
   Future<DoneBaseModel> getDoneFinderForms() =>
