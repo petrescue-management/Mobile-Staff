@@ -10,7 +10,6 @@ import 'package:prs_staff/src/style.dart';
 
 import 'package:prs_staff/view/home/report/detail/card_detail.dart';
 import 'package:prs_staff/view/home/report/detail/card_map.dart';
-import 'package:prs_staff/view/home/report/detail/picker_form.dart';
 import 'package:prs_staff/view/custom_widget/custom_dialog.dart';
 import 'package:prs_staff/view/custom_widget/custom_divider.dart';
 
@@ -48,7 +47,7 @@ class _ProcessingCardDetailState extends State<ProcessingCardDetail> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -307,7 +306,6 @@ class _ProcessingCardDetailState extends State<ProcessingCardDetail> {
       tabs: <Widget>[
         Tab(text: 'Chi tiết'),
         Tab(text: 'Bản đồ'),
-        Tab(text: 'Cập nhật'),
       ],
     );
   }
@@ -316,7 +314,6 @@ class _ProcessingCardDetailState extends State<ProcessingCardDetail> {
     return TabBarView(children: [
       Details(finder: widget.finder),
       FinderLocation(finder: widget.finder),
-      PickerForm(finder: widget.finder),
     ]);
   }
 }

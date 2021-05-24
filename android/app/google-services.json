@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "918318848462",
-    "firebase_url": "https://pet-rescue-fb-default-rtdb.firebaseio.com",
-    "project_id": "pet-rescue-fb",
-    "storage_bucket": "pet-rescue-fb.appspot.com"
+    "project_number": "1010947716602",
+    "firebase_url": "https://petrescue-efe22-default-rtdb.firebaseio.com",
+    "project_id": "petrescue-efe22",
+    "storage_bucket": "petrescue-efe22.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:918318848462:android:79c75f8ca12973b2dbf39f",
+        "mobilesdk_app_id": "1:1010947716602:android:40127b2cba3d591dca6043",
         "android_client_info": {
           "package_name": "com.example.pet_rescue_mobile"
         }
       },
       "oauth_client": [
         {
-          "client_id": "918318848462-9k34232gfins32cat22e85ff77j1c6ja.apps.googleusercontent.com",
+          "client_id": "1010947716602-tejdlvoi16bjrqfeq1i1jiaplh79vrhl.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.pet_rescue_mobile",
@@ -23,28 +23,21 @@
           }
         },
         {
-          "client_id": "918318848462-4i020h04552bc2eov8dnld7hcup093mq.apps.googleusercontent.com",
+          "client_id": "1010947716602-1k4qbosf5th5ejqlen3sufv6lha839mf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCPAMRkJJ8HmclhAUl6HUiBfViZt3kH69c"
+          "current_key": "AIzaSyCu-OJ2trEbf4Azz4EH_SkkJFRhmEmSfdE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "918318848462-4i020h04552bc2eov8dnld7hcup093mq.apps.googleusercontent.com",
+              "client_id": "1010947716602-1k4qbosf5th5ejqlen3sufv6lha839mf.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "918318848462-fgqn9bthj80djuj0d8v83jg6eiq73q85.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "pet-rescue"
-              }
             }
           ]
         }
@@ -52,14 +45,14 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:918318848462:android:cf672e72fa0b0d87dbf39f",
+        "mobilesdk_app_id": "1:1010947716602:android:250697e67590c24cca6043",
         "android_client_info": {
           "package_name": "com.example.prs_staff"
         }
       },
       "oauth_client": [
         {
-          "client_id": "918318848462-ssjt15o8ioh95luhjvu8nhi27f0gkkd5.apps.googleusercontent.com",
+          "client_id": "1010947716602-hk5q1cti918nat8v1je4oivd9bcagedj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.prs_staff",
@@ -67,28 +60,21 @@
           }
         },
         {
-          "client_id": "918318848462-4i020h04552bc2eov8dnld7hcup093mq.apps.googleusercontent.com",
+          "client_id": "1010947716602-1k4qbosf5th5ejqlen3sufv6lha839mf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCPAMRkJJ8HmclhAUl6HUiBfViZt3kH69c"
+          "current_key": "AIzaSyCu-OJ2trEbf4Azz4EH_SkkJFRhmEmSfdE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "918318848462-4i020h04552bc2eov8dnld7hcup093mq.apps.googleusercontent.com",
+              "client_id": "1010947716602-1k4qbosf5th5ejqlen3sufv6lha839mf.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "918318848462-fgqn9bthj80djuj0d8v83jg6eiq73q85.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "pet-rescue"
-              }
             }
           ]
         }

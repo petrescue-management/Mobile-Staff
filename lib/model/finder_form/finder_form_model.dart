@@ -1,6 +1,6 @@
 class FinderForm {
   String finderFormId;
-  String finderDescription;
+  String description;
   List<String> finderImageUrl;
   String insertedBy;
   String finderName;
@@ -14,7 +14,7 @@ class FinderForm {
 
   FinderForm(form) {
     this.finderFormId = form['finderFormId'];
-    this.finderDescription = form['finderDescription'];
+    this.description = form['description'];
     this.finderImageUrl = getImgUrlList(form['finderImageUrl']);
     this.finderName = form['finderName'];
     this.finderDate = form['finderDate'];

@@ -94,7 +94,7 @@ class _FinderLocationState extends State<FinderLocation> {
 
     addressTextController.text =
         await Assistant.searchCoordinateAddress(finderPosition, context);
-    print('This is your Address: ' + addressTextController.text);
+    print('This is the address: ' + addressTextController.text);
 
     Marker locateMarker = Marker(
       markerId: MarkerId('locate'),

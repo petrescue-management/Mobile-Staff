@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-
 import 'package:commons/commons.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:carousel_slider/carousel_options.dart';
@@ -9,11 +8,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:prs_staff/model/finder_form/finder_form_model.dart';
 import 'package:prs_staff/repository/repository.dart';
 
+import 'package:prs_staff/src/asset.dart';
 import 'package:prs_staff/src/style.dart';
 
 import 'package:prs_staff/view/custom_widget/custom_dialog.dart';
 import 'package:prs_staff/view/custom_widget/custom_button.dart';
 import 'package:prs_staff/view/custom_widget/video/custom_video_player.dart';
+import 'package:prs_staff/view/home/report/center/near_center_list.dart';
 
 import '../../../../main.dart';
 
@@ -96,172 +97,130 @@ class _DetailsState extends State<Details> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.only(right: 30, left: 30),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Hình ảnh mô tả',
-              style: TextStyle(
-                color: mainColor,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          CarouselSlider(
-            items: imageSliders,
-            options: CarouselOptions(
-              enableInfiniteScroll: false,
-              enlargeCenterPage: true,
-              aspectRatio: 2.0,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _current = index;
-                });
-              },
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: imgUrlList.map((url) {
-              int index = imgUrlList.indexOf(url);
-              return Container(
-                width: 8.0,
-                height: 8.0,
-                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: _current == index
-                      ? Color.fromRGBO(0, 0, 0, 0.9)
-                      : Color.fromRGBO(0, 0, 0, 0.4),
+    return Scaffold(
+      appBar: widget.finder.finderFormStatus == 3
+          ? AppBar(
+              leading: IconButton(
+                icon: Icon(
+                  Icons.chevron_left,
+                  size: 35,
                 ),
-              );
-            }).toList(),
-          ),
-          FormBuilder(
-            key: _fbKey,
-            child: Expanded(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: _rescueForm(context),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 60,
-                    ),
-                    child: _btnAcceptFinderForm(context),
-                  ),
-                ],
+                color: Colors.black,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
+              brightness: Brightness.light,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            )
+          : Container(),
+      body: Stack(children: [
+        Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(bgp8),
+              fit: BoxFit.cover,
             ),
           ),
-        ],
-      ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.8),
+          ),
+        ),
+        Container(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.only(right: 30, left: 30),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Hình ảnh mô tả',
+                  style: TextStyle(
+                    color: mainColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              CarouselSlider(
+                items: imageSliders,
+                options: CarouselOptions(
+                  enableInfiniteScroll: false,
+                  enlargeCenterPage: true,
+                  aspectRatio: 2.0,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _current = index;
+                    });
+                  },
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: imgUrlList.map((url) {
+                  int index = imgUrlList.indexOf(url);
+                  return Container(
+                    width: 8.0,
+                    height: 8.0,
+                    margin:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _current == index
+                          ? Color.fromRGBO(0, 0, 0, 0.9)
+                          : Color.fromRGBO(0, 0, 0, 0.4),
+                    ),
+                  );
+                }).toList(),
+              ),
+              FormBuilder(
+                key: _fbKey,
+                child: Expanded(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: _rescueForm(context),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 60,
+                        ),
+                        child: _btnProcessFinderForm(context),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+      ]),
     );
   }
 
-  _btnAcceptFinderForm(context) {
-    if (widget.finder.finderFormStatus == 1) {
+  _btnProcessFinderForm(context) {
+    if (widget.finder.finderFormStatus == 2) {
       return CustomButton(
-          label: 'NHẬN YÊU CẦU',
+          label: 'ĐÃ THẤY THÚ CƯNG',
           onTap: () {
-            confirmationDialog(
+            Navigator.push(
               context,
-              'Nhận yêu cầu cứu hộ?',
-              title: '',
-              confirm: false,
-              neutralText: 'Không',
-              positiveText: 'Có',
-              positiveAction: () {
-                showDialog(
-                    context: context,
-                    builder: (context) =>
-                        ProgressDialog(message: 'Đang gửi...'));
-
-                _repo
-                    .updateFinderFormStatus(widget.finder.finderFormId, 2)
-                    .then((value) {
-                  if (value == null) {
-                    warningDialog(context, 'Lỗi hệ thống',
-                        neutralText: 'Đóng', title: '', neutralAction: () {
-                      Navigator.pop(context);
-                    });
-                  } else if (value == false) {
-                    warningDialog(
-                        context, 'Đã có tình nguyện viên nhận yêu cầu này.',
-                        neutralText: 'Đóng', title: '', neutralAction: () {
-                      Navigator.of(context)
-                            .popUntil((route) => route.isFirst);
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MyApp(),
-                          ),
-                        );
-                    });
-                  } else {
-                    successDialog(
-                      context,
-                      'Đã nhận yêu cầu.',
-                      title: 'Thành công',
-                      neutralText: 'Quay lại trang chủ',
-                      neutralAction: () {
-                        Navigator.of(context)
-                            .popUntil((route) => route.isFirst);
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MyApp(),
-                          ),
-                        );
-                      },
-                    );
-
-                    var currentDate = DateTime.now();
-                    String currentDay = (currentDate.day < 10
-                        ? '0${currentDate.day}'
-                        : '${currentDate.day}');
-                    String currentMonth = (currentDate.month < 10
-                        ? '0${currentDate.month}'
-                        : '${currentDate.month}');
-                    String currentHour = (currentDate.hour < 10
-                        ? '0${currentDate.hour}'
-                        : '${currentDate.hour}');
-                    String currentMinute = (currentDate.minute < 10
-                        ? '0${currentDate.minute}'
-                        : '${currentDate.minute}');
-                    String currentSecond = (currentDate.second < 10
-                        ? '0${currentDate.second}'
-                        : '${currentDate.second}');
-                    var notiDate =
-                        '${currentDate.year}-$currentMonth-$currentDay $currentHour:$currentMinute:$currentSecond';
-
-                    Map<String, dynamic> memberNoti = {
-                      'body': 'Tình nguyện viên đã nhận yêu cầu của bạn.',
-                      'date': notiDate,
-                      'titlte': 'Bạn có thông báo về yêu cầu cứu hộ.',
-                      'type': 2,
-                    };
-
-                    _memberRef
-                        .child(widget.finder.finderFormId)
-                        .set(memberNoti);
-                  }
-                });
-              },
+              MaterialPageRoute(
+                builder: (context) => NearestCenterList(
+                  finder: widget.finder,
+                ),
+              ),
             );
           });
     } else if (widget.finder.finderFormStatus == 3) {
       return CustomButton(
-          label: 'ĐÃ MANG VỀ',
+          label: 'ĐÃ ĐẾN TRUNG TÂM',
           onTap: () {
             confirmationDialog(
               context,
-              'Đã mang thú nuôi về đến trung tâm cứu hộ?',
+              'Đã đến trung tâm cứu hộ?',
               title: '',
               confirm: false,
               neutralText: 'Không',
@@ -278,7 +237,6 @@ class _DetailsState extends State<Details> {
                   if (value == null) {
                     warningDialog(context, 'Lỗi hệ thống', title: '');
                   } else {
-
                     successDialog(
                       context,
                       'Đã hoàn thành yêu cầu.',
@@ -317,7 +275,7 @@ class _DetailsState extends State<Details> {
 
                     Map<String, dynamic> memberNoti = {
                       'body':
-                          'Tình nguyện viên đã mang thú nuôi về trung tâm cứu hộ. Cảm ơn sự giúp đỡ của bạn.',
+                          'Tình nguyện viên đã mang thú nuôi đến trung tâm cứu hộ. Cảm ơn sự giúp đỡ của bạn.',
                       'date': notiDate,
                       'titlte': 'Bạn có thông báo về yêu cầu cứu hộ.',
                       'type': 2,
@@ -465,7 +423,7 @@ class _DetailsState extends State<Details> {
                     labelStyle: TextStyle(
                       color: mainColor,
                     ),
-                    hintText: widget.finder.finderDescription,
+                    hintText: widget.finder.description,
                     hintStyle: TextStyle(
                       color: Colors.black,
                     ),

@@ -1,25 +1,34 @@
 class ApiUrl {
-  static String getJWT =
-      'https://petrescueapi.azurewebsites.net/jwt/login-by-volunteer';
-  static String getUserDetail =
-      'https://petrescueapi.azurewebsites.net/api/users';
-  static String updateUserDetail =
-      'https://petrescueapi.azurewebsites.net/api/users/update-profile';
+  static String apiUrl = 'https://petrescuecapston.azurewebsites.net';
 
+  // user
+  static String getJWT = '$apiUrl/jwt/login-by-volunteer';
+  static String getUserDetail = '$apiUrl/api/users';
+  static String updateUserDetail = '$apiUrl/api/users/update-profile';
+  static String updateVolunteerStatus =
+      '$apiUrl/api/users/change-status-for-volunteer';
+  static String updateLocation = '$apiUrl/api/users/update-location';
+
+  // form
+  static String getSystemParameters =
+      '$apiUrl/api/config/get-system-parameters';
   static String getWaitingFinderForm =
-      'https://petrescueapi.azurewebsites.net/api/get-list-finder-form';
+      '$apiUrl/api/finder-forms/get-list-finder-form';
   static String updateFinderFormStatus =
-      'https://petrescueapi.azurewebsites.net/api/update-finder-form-status';
+      '$apiUrl/api/finder-forms/update-finder-form-status';
   static String cancelFinderForm =
-      'https://petrescueapi.azurewebsites.net/api/cancel-finder-form';
+      '$apiUrl/api/finder-forms/cancel-finder-form';
   static String getProcessingFinderForm =
-      'https://petrescueapi.azurewebsites.net/api/get-list-finder-form-by-status?status=2';
+      '$apiUrl/api/finder-forms/get-list-finder-form-by-status?status=2';
   static String getDeliveringFinderForm =
-      'https://petrescueapi.azurewebsites.net/api/get-list-finder-form-by-status?status=3';
+      '$apiUrl/api/finder-forms/get-list-finder-form-by-status?status=3';
   static String createPickerForm =
-      'https://petrescueapi.azurewebsites.net/api/create-picker-form';
+      '$apiUrl/api/picker-forms/create-picker-form';
   static String createPetDocument =
-      'https://petrescueapi.azurewebsites.net/api/create-pet-document';
+      '$apiUrl/api/rescue-documents/create-pet-document';
   static String getDoneFinderForm =
-      'https://petrescueapi.azurewebsites.net/api/get-list-finder-form-finish-by-userid';
+      '$apiUrl/api/finder-forms/get-list-finder-form-finish-by-userid';
+
+  // center/
+  static String getCenters = '$apiUrl/api/centers/get-list-distance-centers';
 }

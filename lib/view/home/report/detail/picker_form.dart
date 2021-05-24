@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 import 'package:prs_staff/model/finder_form/finder_form_model.dart';
+import 'package:prs_staff/model/center_model.dart';
 import 'package:prs_staff/repository/repository.dart';
 
 import 'package:prs_staff/src/asset.dart';
@@ -21,8 +22,9 @@ import '../../../../main.dart';
 // ignore: must_be_immutable
 class PickerForm extends StatefulWidget {
   FinderForm finder;
+  CenterModel center;
 
-  PickerForm({this.finder});
+  PickerForm({this.finder, this.center});
 
   @override
   _PickerFormState createState() => _PickerFormState();
@@ -44,6 +46,19 @@ class _PickerFormState extends State<PickerForm> {
 
   @override
   void initState() {
+    _repo.getNumberOfImage().then((value) {
+      if (value != null) {
+        print('not null: ${value.imageForPicker}');
+        setState(() {
+          limitImg = value.imageForPicker;
+        });
+      } else {
+        setState(() {
+          limitImg = 3;
+        });
+      }
+    });
+
     super.initState();
 
     _memberRef = FirebaseDatabase.instance
@@ -52,30 +67,11 @@ class _PickerFormState extends State<PickerForm> {
         .child('${widget.finder.insertedBy}')
         .child('Notification');
 
-    _repo.getUserDetails().then((value) {
-      _centerRef = FirebaseDatabase.instance
-          .reference()
-          .child('manager')
-          .child('${value.centerId}')
-          .child('Notification');
-    });
-
-    getlitmitImgForVolunteer();
-  }
-
-  getlitmitImgForVolunteer() async {
-    await FirebaseDatabase.instance
+    _centerRef = FirebaseDatabase.instance
         .reference()
-        .child('config')
-        .child('limitImgForVolunteer')
-        .once()
-        .then((DataSnapshot snapshot) {
-      int result = snapshot.value;
-
-      setState(() {
-        limitImg = result;
-      });
-    });
+        .child('manager')
+        .child('${widget.center.centerId}')
+        .child('Notification');
   }
 
   Widget buildViewPickedImages() {
@@ -169,7 +165,7 @@ class _PickerFormState extends State<PickerForm> {
   _btnSubmitInformation(bool hasImage, BuildContext context) {
     if (hasImage == true) {
       return CustomButton(
-        label: 'ĐÃ TÌM THẤY THÚ CƯNG',
+        label: 'GỬI THÔNG BÁO',
         onTap: () {
           if (_fbKey.currentState.saveAndValidate()) {
             final formInputs = _fbKey.currentState.value;
@@ -239,7 +235,6 @@ class _PickerFormState extends State<PickerForm> {
                                   },
                                 );
                               } else {
-
                                 successDialog(
                                   context,
                                   'Đã cập nhật thông tin.',
@@ -256,7 +251,7 @@ class _PickerFormState extends State<PickerForm> {
                                     );
                                   },
                                 );
-                                
+
                                 var currentDate = DateTime.now();
                                 String currentDay = (currentDate.day < 10
                                     ? '0${currentDate.day}'
@@ -319,7 +314,7 @@ class _PickerFormState extends State<PickerForm> {
       );
     } else {
       return CustomDisableButton(
-        label: 'ĐÃ TÌM THẤY THÚ CƯNG',
+        label: 'GỬI THÔNG BÁO',
       );
     }
   }
@@ -337,6 +332,29 @@ class _PickerFormState extends State<PickerForm> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          title: Text(
+            'CẬP NHẬT BÁO CÁO',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          centerTitle: true,
+          leading: IconButton(
+            icon: Icon(
+              Icons.chevron_left,
+              size: 35,
+            ),
+            color: Colors.black,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          brightness: Brightness.light,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
         body: Stack(
           children: [
             Container(

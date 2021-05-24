@@ -91,7 +91,6 @@ class _ProgressCardDetailState extends State<ProgressCardDetail> {
 
   Widget buildTabBody() {
     return TabBarView(children: [
-      
       Details(finder: widget.finder),
       FinderLocation(finder: widget.finder),
     ]);
